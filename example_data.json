@@ -1,0 +1,29 @@
+{
+	"dormant": {
+		"animation": false,
+		"color":{
+			"r": 255,
+			"g": 180,
+			"b": 90
+		}
+	},
+	"active": {
+		"animation": true,
+		"time": 1000,
+		"begin":{
+			"color":{
+				"r": 255,
+				"g": 180,
+				"b": 90
+			}
+		},
+		"end": {
+			"fluid": true,
+			"color":{
+				"r": 255,
+				"g": 255,
+				"b": 255
+			}
+		}
+	}
+}
