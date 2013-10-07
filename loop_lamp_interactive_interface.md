@@ -25,7 +25,7 @@ Custom animation __LED Patterns__ allow the user to create highly customizable a
 
 ###LED Pattern Example:
 
-<img src="custom_animation.png" alt="Example Image" style="width: 80%;"/>
+<img src="images/custom_animation.png" alt="Example Image" style="width: 80%;"/>
 
 ##Presets
 
@@ -35,6 +35,6 @@ Presets are used to save custom dormant and active lamp states. They can allow u
 
 Below is a prototype interface that allows users to program their lamps. The final version of this page will be included as a "Loop Lamp" packaged app at the user's coder.local/.
 
-![Input page layout](input_demo.png)
+![Input page layout](images/input_demo.png)
 
 ##Backend
