@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Frontend Example</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+		<script type="text/javascript">
+			var data = {
+				behavior: { foo: "bar" }
+				//EXAMPLE
+				//savePreset: "color-wheel.json", //name of the preset to save this behavior as
+				//loadPrest: "flash.json" //name of the preset to load
+			}
+
+			$.ajax({
+				url: "http://127.0.0.1:8000/",
+				data: {
+					
+				},
+				method: "POST",
+				success: function(){
+					console.log("shit worked");
+				},
+				error: function(){
+					console.log("shit broke");
+				}
+			});
+		</script>
+	</head>
+
+	<body>
+	</body>
+
+</html>

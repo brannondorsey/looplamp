@@ -1,18 +1,22 @@
 #Loop Lamp Interactive Interface
 
+##Interface
+
+Below is a prototype interface that allows users to program their lamps. This example is NOT a representation of how the final version of this page will look but rather an illustration of its interactive and programmable features. The final version will be written and designed with bootstrap and included as a "Loop Lamp" packaged app at the user's coder.local/.
+
+![Input page layout](images/input_demo.png)
+
 ##Default
 
-When a user first plugs in their lamp the default presets will be enabled. The lamp's dormant state will be white at 100% brightness. The lamp's active state, triggered by live tweets including "#lightupchicago", will be a five second color flourish animation (or something else, yet to be determined).
+When a user first plugs in their lamp the default presets will be enabled. The lamp's dormant state will be white at 100% brightness. The lamp's active state, triggered by live tweets including the string "#lightupchicago", will be a five second color flourish animation (or something else, yet to be determined).
 
 ##What users can control "programmatically"
 
 Users will be encouraged to play with the light colors and animations of their lamp. If twitter input is enabled, they will also be able to customize what custom text strings their lamp is monitoring twitter for.
 
-- Dormant behavior of the lamp (static or animated)
-- Dormant color of the lamp (static or animated)
-- Active behavior of the lamp (static or animated)
-- Active color of the lamp (static or animated)
-- Active state (time)
+- Dormant color and behavior of the lamp (static or animated)
+- Active color and behavior of the lamp (static or animated)
+- Active state length (time)
 - Custom animation (LED patterns)
 
 A __static__ setting contains three `r`, `g`, and `b` values that are non changing.
@@ -30,11 +34,3 @@ Custom animation __LED Patterns__ allow the user to create highly customizable a
 ##Presets
 
 Presets are used to save custom dormant and active lamp states. They can allow users to easily save and load their lamp state and custom animation programs and experiment with different setups.
-
-##Interface
-
-Below is a prototype interface that allows users to program their lamps. The final version of this page will be included as a "Loop Lamp" packaged app at the user's coder.local/.
-
-![Input page layout](images/input_demo.png)
-
-##Backend
