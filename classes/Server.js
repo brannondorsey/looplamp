@@ -1,51 +1,29 @@
-var querystring = require('querystring');
+var express = require("express");
 
 function Server(port){
-    this.http = require('http');
+    this.app = express();
+    this.app.use(express.bodyParser());
     this.port = port;
 }
 
-Server.prototype.start = function(){
-    var thisObject = this;
-    this.http.createServer(function(request, response) {
-        thisObject._processPostData(request, response, function() {
-            console.log("The response POST is " + typeof response.post);
-            console.log(response.post);
-            response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
-            response.end();
-        });
-    }).listen(this.port);
+Server.prototype.start = function(onPost){
+    this.app.use(express.bodyParser());
+    // this.app.use(function(req, res){
+    //     res.header('Access-Control-Allow-Credentials', true);
+    //     res.header('Access-Control-Allow-Origin', req.headers.origin);
+    //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    //     res.header('Access-Control-Allow-Headers',  'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');   
+    // });
+    this.app.post('/', function(req, res) {
+      //res.setHeader('Content-Type', 'application/json');
+        onPost(req.body);
+        res.writeHead(200);
+    });
+    this.app.listen(this.port);
 }
 
-Server.prototype._processPostData = function(request, response, callback) {
-    var queryData = "";
-    if(typeof callback !== 'function'){
-        console.log("The third parameter of postRequest was not a function");
-        return null;
-    } 
-
-    if(request.method == 'POST') {
-        request.on('data', function(data) {
-            console.log("data received");
-            queryData += data;
-            if(queryData.length > 1e6) {
-                queryData = "";
-                response.writeHead(413, {'Content-Type': 'text/plain'}).end();
-                request.connection.destroy();
-            }
-        });
-
-        request.on('end', function() {
-            response.post = querystring.parse(queryData);
-            callback();
-        });
-
-    } else {
-        console.log("The method was not post");
-        response.writeHead(405, {'Content-Type': 'text/plain'});
-        response.write("No post was received");
-        response.end();
-    }
+Server.prototype.getPost = function(){
+    return this.postVals;
 }
 
 module.exports = Server;

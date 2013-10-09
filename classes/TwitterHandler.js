@@ -6,12 +6,12 @@ function TwitterHandler(){
 	}else console.log("Failed to load twitter credentials");
 }
 
-TwitterHandler.prototype.onTweetReceived = function(mode, track, onStream){
+TwitterHandler.prototype.onTweetReceived = function(streamMode, tracking, onStream){
 	//starts the stream
-	this.mode = mode;
-	this.track = track;
+	this.streamMode = streamMode;
+	this.tracking = tracking;
 	var that = this;
-	this.stream = this.twitter.stream(mode, { track: track }, function(stream) {
+	this.stream = this.twitter.stream(streamMode, { track: tracking }, function(stream) {
 		//event
 	    stream.on('data', function(data) {
 	    	if(that._validTweet(data)) onStream(data);
@@ -27,9 +27,16 @@ TwitterHandler.prototype.log = function(data){
 	console.log("");
 }
 
-// TwitterHandler.prototype.updateStreamOptions = function(track, mode, callback){
-// 	this.onTweetReceived = function(track, mode, callback) //this should destroy the old stream?
-// }
+//updates the stream. Alias of TwitterHandler::onTweetReceived
+TwitterHandler.prototype.updateStream = function(streamMode, tracking, callback){
+	this.onTweetReceived(track, mode, callback); //this should destroy the old stream?
+}
+
+//tests if the data stream needs to be updated because the mode or tracking is different
+TwitterHandler.prototype.needsNewStream = function(data){
+	return (data.tracking != this.tracking || 
+			data.streamMode != this.streamMode) ? true : false;
+}
 
 //--------------------------------------------------------------
 //PROTECTED
