@@ -29,13 +29,17 @@ TwitterHandler.prototype.log = function(data){
 
 //updates the stream. Alias of TwitterHandler::onTweetReceived
 TwitterHandler.prototype.updateStream = function(streamMode, tracking, callback){
-	this.onTweetReceived(track, mode, callback); //this should destroy the old stream?
+	this.onTweetReceived(streamMode, tracking, callback); //this should destroy the old stream?
 }
 
 //tests if the data stream needs to be updated because the mode or tracking is different
 TwitterHandler.prototype.needsNewStream = function(data){
-	return (data.tracking != this.tracking || 
-			data.streamMode != this.streamMode) ? true : false;
+	// console.log("New tracking: " + data.twitter.tracking);
+	// console.log("Old tracking: " + this.tracking);
+	// console.log("New streamMode: " + data.twitter.streamMode);
+	// console.log("Old streamMode: " + this.streamMode);
+	return (data.twitter.tracking != this.tracking || 
+			data.twitter.streamMode != this.streamMode) ? true : false;
 }
 
 //--------------------------------------------------------------

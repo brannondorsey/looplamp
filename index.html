@@ -6,7 +6,7 @@
 		<script type="text/javascript">
 			var behavior = { 
 					"twitter": {
-						"tracking": "#lightupchicago",
+						"tracking": "lightupchicago",
 						"streamMode": "filter",
 						"dormant": {
 							"animation": false,
@@ -40,13 +40,14 @@
 				//EXAMPLE
 				//savePreset: "color-wheel.json", //name of the preset to save this behavior as
 				//loadPrest: "flash.json" //name of the preset to load
-
+				console.log("Tracking " + behavior.twitter.tracking);
 			$.ajax({
 				url: "http://127.0.0.1:8000/",
-				data: { foo : "bar"},
+				data: behavior,
 				method: "POST",
 				success: function(){
 					console.log("shit worked");
+					console.log("Tracking" + behavior.twitter.tracking);
 				},
 				error: function(){
 					console.log("shit broke");

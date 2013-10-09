@@ -15,29 +15,37 @@ server.start(function(post){
 
 	//do validation here...
 	var data = post;
-	var behavior = false; //the behavior that will be sent to the lamp
 
 	//if the behavior data is new
-	if(typeof data.loadPreset === 'undefined'){
-		var filename = (typeof data.savePreset === 'undefined') ? "behavior.json" : data.savepreset;
-		var saveData = JSON.stringify(data.behavior);
+	if(typeof data.twitter.loadPreset === 'undefined'){
+		var filename = (typeof data.twitter.savePreset === 'undefined') ? "behavior.json" : data.savepreset;
+		var saveData = JSON.stringify(data);
 		dataHand.save(filename, saveData, function(err){
 			if(!err){
-				behavior = saveData; //the behavior becomes the data that was just saved
+				updateBehavior(saveData);
 				console.log("data saved successfully!");
 			}
 		});
 	}else{ //if the behavior needs to be loaded from a preset
-		dataHand.load(data.loadPreset, function(err, data){
+		dataHand.load(data.twitter.loadPreset, function(err, data){
 			if(!err){
 				behavior = JSON.parse(data); //the behavior becomes the preset loaded
+				updateBehavior(behavior);
 				console.log("data loaded successfully from preset");
 			}
 		});
 	}
 
-	//if the behavior was set
-	if(behavior) lamp.updateBehavior(behavior);
+	//note this function is inside start becuase it is only used here
+	function updateBehavior(behavior){
+		lamp.updateBehavior(behavior);
+		if(twitterHand.needsNewStream(data)){
+			twitterHand.updateStream(data.twitter.streamMode, data.twitter.tracking, function(data){
+				respondToTweet(data);
+				console.log("The lamp is now tracking " + data.twitter.tracking);
+			});
+		}
+	}
 });
 
 lamp.start(20);
