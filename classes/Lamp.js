@@ -23,7 +23,7 @@ Lamp.prototype.start = function(millis){
 //PROTECTED
 
 Lamp.prototype._run = function(){
-	console.log("the lamp is running");
+	//console.log("the lamp is running");
 	if(this.isActive) this._activeState(); //run the active state
 	else this._dormantState();
 }
@@ -35,7 +35,7 @@ Lamp.prototype._activeState = function(){
 }
 
 Lamp.prototype._dormantState = function(){
-	console.log("I am the dormant state");
+	//console.log("I am the dormant state");
 }
 
 Lamp.prototype._activeComplete = function(){

@@ -1,16 +1,20 @@
 var Server = require("./classes/Server");
 var DataHandler = require("./classes/DataHandler");
 var Lamp = require("./classes/Lamp");
+var TwitterHandler = require("./classes/TwitterHandler");
 
 var dataHand = new DataHandler("behavior_data/");
 var server = new Server(8000);
+var twitterHand = new TwitterHandler();
 var lamp = new Lamp();
+
+var initialBehavior = dataHand.loadPreviousBehavior();
+
 //starts sever and acts as event handler for valid post
 server.start(function(post){
 
 	//do validation here...
 	var data = post;
-	
 	var behavior = false; //the behavior that will be sent to the lamp
 
 	//if the behavior data is new
@@ -37,3 +41,18 @@ server.start(function(post){
 });
 
 lamp.start(20);
+
+//--------------------------------------------------------------
+//EVENT HANDLERS
+
+twitterHand.onTweetReceived('filter', initialBehavior.twitter.tracking, function(data){
+	respondToTweet(data)
+});
+
+//not inline because it may be used more than once if the stream is restarted
+function respondToTweet(data){
+	
+	//logic for flashing lights goes here...
+	
+	twitterHand.log(data);
+}

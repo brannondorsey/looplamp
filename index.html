@@ -5,7 +5,39 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
 		<script type="text/javascript">
 			var data = {
-				behavior: { foo: "bar" }
+				behavior: { 
+					"twitter": {
+						"tracking": "#lightupchicago",
+						"streamMode": "filter",
+						"dormant": {
+							"animation": false,
+							"color":{
+								"r": 255,
+								"g": 180,
+								"b": 90
+							}
+						},
+						"active": {
+							"animation": true,
+							"time": 1000,
+							"begin":{
+								"color":{
+									"r": 255,
+									"g": 180,
+									"b": 90
+								}
+							},
+							"end": {
+								"fluid": true,
+								"color":{
+									"r": 255,
+									"g": 255,
+									"b": 255
+								}
+							}
+						}
+					}
+				}
 				//EXAMPLE
 				//savePreset: "color-wheel.json", //name of the preset to save this behavior as
 				//loadPrest: "flash.json" //name of the preset to load

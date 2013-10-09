@@ -15,4 +15,10 @@ DataHandler.prototype.load = function(filename, onLoad){
 	});
 }
 
+DataHandler.prototype.loadPreviousBehavior = function(){
+	var file = this.fs.readFileSync(this.saveDirectory + "behavior.json");
+	//validate file here...
+	return JSON.parse(file);
+}
+
 module.exports = DataHandler;
