@@ -48,7 +48,7 @@ server.start(function(post){
 	}
 });
 
-lamp.start(20);
+lamp.start(initialBehavior);
 
 //--------------------------------------------------------------
 //EVENT HANDLERS
@@ -60,7 +60,11 @@ twitterHand.onTweetReceived('filter', initialBehavior.twitter.tracking, function
 //not inline because it may be used more than once if the stream is restarted
 function respondToTweet(data){
 	
-	//logic for flashing lights goes here...
-	
-	twitterHand.log(data);
+	//only make the lamp active if it is dormant
+	if(!lamp.isActive){
+		twitterHand.log(data);
+
+		//logic for flashing lights goes here...
+		lamp.setActive();
+	}
 }
