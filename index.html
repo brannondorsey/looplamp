@@ -5,34 +5,33 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
 		<script type="text/javascript">
 			var behavior = { 
-					"twitter": {
-						"tracking": "lightupchicago",
-						"streamMode": "filter",
-						"dormant": {
-							"animation": false,
+					"mode": "twitter",
+					"tracking": "helmet",
+					"streamMode": "filter",
+					"dormant": {
+						"animation": false,
+						"color":{
+							"r": 255,
+							"g": 180,
+							"b": 90
+						}
+					},
+					"active": {
+						"animation": true,
+						"time": 1000,
+						"begin":{
 							"color":{
 								"r": 255,
 								"g": 180,
 								"b": 90
 							}
 						},
-						"active": {
-							"animation": true,
-							"time": 1000,
-							"begin":{
-								"color":{
-									"r": 255,
-									"g": 180,
-									"b": 90
-								}
-							},
-							"end": {
-								"fluid": true,
-								"color":{
-									"r": 255,
-									"g": 255,
-									"b": 255
-								}
+						"end": {
+							"fluid": true,
+							"color":{
+								"r": 255,
+								"g": 255,
+								"b": 255
 							}
 						}
 					}
@@ -40,14 +39,15 @@
 				//EXAMPLE
 				//savePreset: "color-wheel.json", //name of the preset to save this behavior as
 				//loadPrest: "flash.json" //name of the preset to load
-				console.log("Tracking " + behavior.twitter.tracking);
+				console.log(behavior.mode + " mode");
+				console.log("Tracking " + behavior.tracking);
 			$.ajax({
 				url: "http://127.0.0.1:8000/",
 				data: behavior,
 				method: "POST",
 				success: function(){
 					console.log("shit worked");
-					console.log("Tracking" + behavior.twitter.tracking);
+					console.log("Tracking" + behavior.tracking);
 				},
 				error: function(){
 					console.log("shit broke");

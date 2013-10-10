@@ -1,32 +1,31 @@
-{ 
-	"twitter": {
-		"tracking": "#lightupchicago",
-		"streamMode": "filter",
-		"dormant": {
-			"animation": false,
+{ 	
+	"mode": "twitter",
+	"tracking": "#lightupchicago",
+	"streamMode": "filter",
+	"dormant": {
+		"animation": false,
+		"color":{
+			"r": 255,
+			"g": 180,
+			"b": 90
+		}
+	},
+	"active": {
+		"animation": true,
+		"time": 1000,
+		"fluid": true,
+		"begin":{
 			"color":{
 				"r": 255,
 				"g": 180,
 				"b": 90
 			}
 		},
-		"active": {
-			"animation": true,
-			"time": 1000,
-			"fluid": true,
-			"begin":{
-				"color":{
-					"r": 255,
-					"g": 180,
-					"b": 90
-				}
-			},
-			"end": {
-				"color":{
-					"r": 255,
-					"g": 255,
-					"b": 255
-				}
+		"end": {
+			"color":{
+				"r": 255,
+				"g": 255,
+				"b": 255
 			}
 		}
 	}

@@ -16,34 +16,40 @@ server.start(function(post){
 	//do validation here...
 	var data = post;
 
-	//if the behavior data is new
-	if(typeof data.twitter.loadPreset === 'undefined'){
-		var filename = (typeof data.twitter.savePreset === 'undefined') ? "behavior.json" : data.savepreset;
-		var saveData = JSON.stringify(data);
-		dataHand.save(filename, saveData, function(err){
-			if(!err){
-				updateBehavior(saveData);
-				console.log("data saved successfully!");
-			}
-		});
-	}else{ //if the behavior needs to be loaded from a preset
-		dataHand.load(data.twitter.loadPreset, function(err, data){
-			if(!err){
-				behavior = JSON.parse(data); //the behavior becomes the preset loaded
-				updateBehavior(behavior);
-				console.log("data loaded successfully from preset");
-			}
-		});
-	}
-
-	//note this function is inside start becuase it is only used here
-	function updateBehavior(behavior){
-		lamp.updateBehavior(behavior);
-		if(twitterHand.needsNewStream(data)){
-			twitterHand.updateStream(data.twitter.streamMode, data.twitter.tracking, function(data){
-				respondToTweet(data);
-				console.log("The lamp is now tracking " + data.twitter.tracking);
+	//if the behavior mode is twitter
+	if(data.mode == 'twitter'){
+		console.log("got in here because the mode was twitter");
+		//if the behavior data is new
+		if(typeof data.loadPreset === 'undefined'){
+			var filename = (typeof data.savePreset === 'undefined') ? "behavior.json" : data.savePreset;
+			var saveData = JSON.stringify(data);
+			dataHand.save(filename, saveData, function(err){
+				if(!err){
+					updateBehavior(saveData);
+					console.log("data saved successfully!");
+				}
 			});
+		}else{ //if the behavior needs to be loaded from a preset
+			dataHand.load(data.loadPreset, function(err, data){
+				if(!err){
+					behavior = JSON.parse(data); //the behavior becomes the preset loaded
+					updateBehavior(behavior);
+					console.log("data loaded successfully from preset");
+				}
+			});
+		}
+
+		//note this function is inside start becuase it is only used here
+		function updateBehavior(behavior){
+			lamp.updateBehavior(behavior);
+			if(twitterHand.needsNewStream(data)){
+				twitterHand.updateStream(data.streamMode, data.tracking, function(tweetData){
+					respondToTweet(tweetData);
+					//dont even FUCKING think about putting anything else in here...
+					//it will cause the most unnoticable bug that will ruin your life
+					//because this registers a new event that overrides onTweetRecieved
+				});
+			}
 		}
 	}
 });
@@ -53,18 +59,18 @@ lamp.start(initialBehavior);
 //--------------------------------------------------------------
 //EVENT HANDLERS
 
-twitterHand.onTweetReceived('filter', initialBehavior.twitter.tracking, function(data){
-	respondToTweet(data)
+twitterHand.onTweetReceived('filter', initialBehavior.tracking, function(tweetData){
+	respondToTweet(tweetData);
 });
 
 //not inline because it may be used more than once if the stream is restarted
-function respondToTweet(data){
+function respondToTweet(tweetData){
 	
 	//only make the lamp active if it is dormant
-	if(!lamp.isActive){
-		twitterHand.log(data);
+	//if(!lamp.isActive){
+		twitterHand.log(tweetData);
 
 		//logic for flashing lights goes here...
 		lamp.setActive();
-	}
+	//}
 }
