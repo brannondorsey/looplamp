@@ -1,0 +1,31 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.mainmain {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.twitter-title {
+	text-align:center;
+	
+}
+
+.twitter-title h1 {
+	font-size: 72px;
+}
+
+.jumbotron {
+	margin-top: 50px;
+	
+}
+
+.myContainer {
+	padding-left: 0px;
+}
+
