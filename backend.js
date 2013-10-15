@@ -9,6 +9,7 @@ var twitterHand = new TwitterHandler();
 var lamp = new Lamp(51);
 
 var initialBehavior = dataHand.loadPreviousBehavior();
+console.log(initialBehavior);
 
 //starts sever and acts as event handler for valid post
 server.start(function(post){
@@ -68,7 +69,7 @@ function respondToTweet(tweetData){
 	
 	//only make the lamp active if it is dormant
 	if(!lamp.isActive){
-		twitterHand.log(tweetData);
+		//twitterHand.log(tweetData);
 
 		//logic for flashing lights goes here...
 		lamp.setActive();

@@ -21,6 +21,7 @@ Lamp.prototype.setActive = function(){
 
 Lamp.prototype.start = function(behavior){
 	this.behavior = behavior;
+	//console.log(this.behavior);
 	this.isActive = false;
 	this._dormantState(); //start the dormant state
 }
@@ -42,10 +43,10 @@ Lamp.prototype._activeComplete = function(){
 
 //writes the behavior to the pi's lights. 
 Lamp.prototype._writeBehavior = function(dormantOrActiveObj, isActive){
-	
+
 	var state = dormantOrActiveObj; //i.e. this.behavior.active
-	if(state.animation === 'true'){ //animation
-		console.log("I should be doing an animation");
+	if(state.animation === true||
+	   state.animation === 'true'){ //animation
 		this.throb = new Throb(state);
 
 		//animate. Anonomous function called when animation is complete
@@ -62,8 +63,7 @@ Lamp.prototype._writeBehavior = function(dormantOrActiveObj, isActive){
 		//note: the color object's properties being stored in r, g, b are
 		//currently STRINGs. If this is a problem use a method like Throb._parseColorFromJSON
 		var color = state.color;
-		console.log("I should NOT be doing an animation");
-		console.log(color);
+		
 		this.pixels.fillRGB(color.r, color.g, color.b);
 		this.pixels.update();
 		//if this is active then run the dormant state once the active time is up
@@ -72,7 +72,7 @@ Lamp.prototype._writeBehavior = function(dormantOrActiveObj, isActive){
 			setTimeout(function(){
 				that.isActive = false;
 				that._dormantState();
-			}, state.activeTime);
+			}, state.time);
 		}
 	}
 }

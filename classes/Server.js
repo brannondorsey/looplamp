@@ -15,6 +15,8 @@ Server.prototype.start = function(onPost){
     //     res.header('Access-Control-Allow-Headers',  'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');   
     // });
     this.app.post('/', function(req, res) {
+        console.log("I received a POST request. \n It contained: ");
+        console.log(req.body);
         res.setHeader('Content-Type', 'application/json');
         onPost(req.body);
         res.writeHead(200);

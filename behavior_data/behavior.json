@@ -1,6 +1,6 @@
 { 
 	"mode": "twitter",
-	"tracking": "#lightupchicago",
+	"tracking": "obama",
 	"streamMode": "filter",
 	"dormant": {
 		"animation": "false",
