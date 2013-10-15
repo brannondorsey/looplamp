@@ -23,8 +23,9 @@
 	#red, #green, #blue {
 		float: left;
 		clear: left;
-		width: 60%;
+		width: 90%;
 		margin: 15px;
+		border: none;
 	}
 	#swatch {}
 	#red .ui-slider-range { background: #ef2929; }
@@ -88,21 +89,26 @@
         </div>
       </div>
 
-      <!-- Begin page content -->
       <div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-          TWITTER mode
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse in">
-      <div class="panel-body"><h1>Listening for <input type="text" placeholder="#LightUpChicago"> on <input type="text" placeholder="anyone's"> Twitter account. </h1>	
+        <form>
+      <!-- TWITTER SECTION -->
+      
+        <div class="panel panel-default">
+          <div class="panel-heading">
+          <h4 class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            TWITTER mode
+            </a>
+          </h4>
+        </div>
+
+      <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body"><h1>Listening for <input type="text" placeholder="#LightUpChicago"> on <input type="text" placeholder="anyone's"> Twitter account. </h1>	
       </div>
     </div>
   </div>
+
+  <!-- DORMANT SECTION -->
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -111,17 +117,32 @@
         </a>
       </h4>
     </div>
+
     <div id="collapseTwo" class="panel-collapse collapse">
       <div id="swatch" class="panel-body ui-widget-content" >
-      
-		<div id="red"></div>
-		<div id="green"></div>
-		<div id="blue"></div>
-
-
+      	<div class="row">
+  			<div class="col-md-8">
+  				<div id="red"></div>
+				<div id="green"></div>
+				<div id="blue"></div>
+  			</div>
+  			<div class="col-md-4"></div>
       </div>
+      <!-- 
+      <div class="row">
+      <div class="col-md-4 offset2">
+		<button type="button" class="btn btn-success">Load Preset</button>
+	  </div>	
+	  <div class="col-md-4 offset2">
+		<button type="button" class="btn btn-info">Save Preset</button>
+      </div>
+      </div>
+      -->
     </div>
   </div>
+</div>
+  
+  <!-- ACTIVE SECTION -->
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -136,6 +157,8 @@
       </div>
     </div>
   </div>
+
+  <!-- CUSTOM SECTION -->
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -150,13 +173,13 @@
       </div>
     </div>
   </div>
+</form>
 </div>
-
-    </div>
+</div>
 
     <div id="footer">
       <div class="container">
-        <p class="text-muted credit">DSSG, Inventables, n' shit</p>
+        <p class="text-muted credit"><a href="" target="_blank">DSSG</a>, <a href="" target="_blank">Inventables</a>, <a href="" target="_blank">MP</a>, <a href="" target="_blank">BD</a>, & <a href="http://notandrewkaye.com" target="_blank">AK</a>.</p>
       </div>
     </div>
 
