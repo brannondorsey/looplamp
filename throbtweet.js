@@ -60,7 +60,7 @@ function respondToTweet(tweetData){
 	
 	//only make the lamp active if it is dormant
 	if(!lamp.isActive){
-		twitterHand.log(tweetData);
+		//twitterHand.log(tweetData);
 
 		newRandomAnimation();
 
