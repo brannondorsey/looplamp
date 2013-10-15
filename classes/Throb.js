@@ -4,7 +4,6 @@
 function Throb(animationObject){
 
 	this.time = animationObject.time;
-	console.log(this.time);
 	this.beginColor = this._parseColorFromJSON(animationObject.begin.color);
 	this.endColor = this._parseColorFromJSON(animationObject.end.color);
 	this.fluid = Boolean(animationObject.fluid);
@@ -20,9 +19,6 @@ Throb.prototype.animate = function(pixelBuffer, onFinished){
 	
 	this.currentFrame = 0;
 	this.currentColor = this.beginColor;
-
-	console.log(this.currentColor);
-	console.log(this.endColor);
 
 	//the values each color should increment by so that they each arrive
 	//at the target color at the same time
@@ -66,7 +62,7 @@ Throb.prototype.isFinished = function(){
 Throb.prototype._tick = function(pixelBuffer){
 	var pixels = pixelBuffer;
 	var color = this._increment(this.currentColor);
-	console.log(color);
+
 	pixels.fillRGB(color.r, color.g, color.b);
 
 	//currentColor becomes the new color
