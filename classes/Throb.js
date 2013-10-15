@@ -2,18 +2,17 @@
 //Classes
 
 function Throb(animationObject){
+
 	this.time = animationObject.time;
-	this.beginColor = animationObject.begin.color;
-	this.endColor = animationObject.end.color;
-	this.fluid = animationObject.fluid;
+	this.beginColor = this._parseColorFromJSON(animationObject.begin.color);
+	this.endColor = this._parseColorFromJSON(animationObject.end.color);
+	this.fluid = Boolean(animationObject.fluid);
 	this.shouldRepeat = (this.fluid) ? true : false;
 
 	this.frameRate = 10;
 	this.threshold = 1;
 	this.numbFrames = this.time/this.frameRate;
 	this.isFinished = false;
-
-	console.log("The number of frames is " + this.numbFrames);
 }
 
 Throb.prototype.animate = function(pixelBuffer, onFinished){
@@ -26,10 +25,6 @@ Throb.prototype.animate = function(pixelBuffer, onFinished){
 	this.rIncrementVal = Math.abs(Math.abs(this.beginColor.r - this.endColor.r) / this.numbFrames);
 	this.gIncrementVal = Math.abs(Math.abs(this.beginColor.g - this.endColor.g) / this.numbFrames);
 	this.bIncrementVal = Math.abs(Math.abs(this.beginColor.b - this.endColor.b) / this.numbFrames);
-
-	console.log("r increment:" + this.rIncrementVal);
-	console.log("g increment:" + this.gIncrementVal);
-	console.log("b increment:" + this.bIncrementVal);
 
 	var that = this;
 	this.intervalID = setInterval(function(){
@@ -67,9 +62,8 @@ Throb.prototype.isFinished = function(){
 Throb.prototype._tick = function(pixelBuffer){
 	var pixels = pixelBuffer;
 	var color = this._increment(this.currentColor);
+	//console.log(color);
 	pixels.fillRGB(color.r, color.g, color.b);
-
-	console.log(color); //LOOK HERE
 
 	//currentColor becomes the new color
 	this.currentColor = color; 
@@ -106,6 +100,14 @@ Throb.prototype._getIncrementedColor = function(incrementVal, colorVal, targetCo
 
 Throb.prototype._targetReached = function(threshold, currentColor, targetColor){
 	return (Math.abs(currentColor - targetColor) < threshold) ? true : false;
+}
+
+Throb.prototype._parseColorFromJSON = function(colorJSON){
+	var colorToReturn = {};
+	colorToReturn.r = parseInt(colorJSON.r);
+	colorToReturn.g = parseInt(colorJSON.g);
+	colorToReturn.b = parseInt(colorJSON.b);
+	return colorToReturn;
 }
 
 module.exports = Throb;

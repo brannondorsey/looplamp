@@ -1,7 +1,11 @@
-var Pixel = require('adafruit_pixel').Pixel;
+var spi = require('spi'),
+RPixel = require('raspberrypixels'),
+Throb = require('./Throb');
+var Pixel = RPixel.Pixel;
 
-function Lamp(){
-	this.lights = Pixel('/dev/spidev1.1', 25);
+function Lamp(numPixels){
+	this.device	= new spi.Spi('/dev/spidev0.0', function(){});
+	this.pixels = new RPixel.PixelBuffer(this.device, numPixels);
 	//this.isActive = true; //hypothetically this should block any active 
 	//states from happening until this.start
 }
@@ -30,71 +34,38 @@ Lamp.prototype._activeState = function(){
 
 Lamp.prototype._dormantState = function(){
 	this._writeBehavior(this.behavior.dormant, false);
-	// var dormant = this.behavior.dormant;
-	// if(dormant.animation){ //animation
-	// 	var startColor = this._formatColorForSpi(dormant.begin.color);
-	// 	var endColor = this._formatColorForSpi(dormant.end.color);
-	// 	var time = dormant.time;
-	// 	this.animation = new Throb("COME BACK", 
-	// 								this.lights, 
-	// 								startColor,
-	// 								time);
-	// 	this.animation.start();
-	// 	//set a timer to turn the animation off when it stops
-	// 	var that = this;
-	// 	setTimeout(function(){
-	// 		//should have already stopped but if not stop it
-	// 		this.animation.stop();
-	// 		//recur this function because the behavior is animation and, after all, this is the dormant state
-	// 		that._dormantState();
-	// 	}, time);
-
-	// }else{ //static 
-	// 	var hexColor = this._formatColorForSpi(dormant.color);
-	// 	lights.set(hexColor[0], hexColor[1], hexColor[2]);
-	// 	lights.sync();
-	// }
 }
 
 Lamp.prototype._activeComplete = function(){
 	//return bool representing wether the active state is complete
 }
 
-//takes a color object and returns an array of [r,g,b] hex codes
-Lamp.prototype._formatColorForSpi = function(color){
-	return [ color.r.toString(16),
-			 color.g.toString(16),
-			 color.b.toString(16)];
-}
-
 //writes the behavior to the pi's lights. 
 Lamp.prototype._writeBehavior = function(dormantOrActiveObj, isActive){
 	
 	var state = dormantOrActiveObj; //i.e. this.behavior.active
-	if(state.animation){ //animation
-		var startColor = this._formatColorForSpi(state.begin.color);
-		var endColor = this._formatColorForSpi(state.end.color);
-		this.animation = new Throb("COME BACK", 
-									this.lights, 
-									startColor,
-									state.animationTime);
-		this.animation.start();
+	if(state.animation === 'true'){ //animation
+		console.log("I should be doing an animation");
+		this.throb = new Throb(state);
 
+		//animate. Anonomous function called when animation is complete
 		var that = this;
-		setTimeout(function(){
-			//should have already stopped but if not stop it
-			this.animation.stop();
+		this.throb.animate(this.pixels, function(){
 			if(isActive) that.isActive = false;
 			//run the dormant state when any animation is over.
 			//If this is the active state, it should now be the dormant one.
 			//If this is the dormant state, it should recur itself because
 			//the lamp is always dormant unless active
-			that._dormantState(); 
-		}, state.animationTime);
+			that._dormantState();
+		});
 	}else{ //static
-		var hexColor = this._formatColorForSpi(state.color);
-		lights.set(hexColor[0], hexColor[1], hexColor[2]);
-		lights.sync();
+		//note: the color object's properties being stored in r, g, b are
+		//currently STRINGs. If this is a problem use a method like Throb._parseColorFromJSON
+		var color = state.color;
+		console.log("I should NOT be doing an animation");
+		console.log(color);
+		this.pixels.fillRGB(color.r, color.g, color.b);
+		this.pixels.update();
 		//if this is active then run the dormant state once the active time is up
 		if(isActive){
 			var that = this;

@@ -2,10 +2,10 @@ var spi = require('spi'),
 RPixel = require('raspberrypixels');
 var Pixel = RPixel.Pixel;
 
-var numPixels = 11;
+var numPixels = 51;
 
 var device	= new spi.Spi('/dev/spidev0.0', function(){});
-var pixels 	= new RPixel.PixelBuffer(device, 11);
+var pixels 	= new RPixel.PixelBuffer(device, numPixels);
 
 //---------------------------------------------------------
 //Do stuff in here

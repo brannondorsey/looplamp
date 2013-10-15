@@ -6,7 +6,7 @@ var TwitterHandler = require("./classes/TwitterHandler");
 var dataHand = new DataHandler("behavior_data/");
 var server = new Server(8000);
 var twitterHand = new TwitterHandler();
-var lamp = new Lamp();
+var lamp = new Lamp(51);
 
 var initialBehavior = dataHand.loadPreviousBehavior();
 
@@ -67,10 +67,10 @@ twitterHand.onTweetReceived('filter', initialBehavior.tracking, function(tweetDa
 function respondToTweet(tweetData){
 	
 	//only make the lamp active if it is dormant
-	//if(!lamp.isActive){
+	if(!lamp.isActive){
 		twitterHand.log(tweetData);
 
 		//logic for flashing lights goes here...
 		lamp.setActive();
-	//}
+	}
 }

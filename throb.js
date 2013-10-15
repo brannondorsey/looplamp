@@ -3,10 +3,10 @@ RPixel = require('raspberrypixels'),
 Throb = require('./classes/Throb');
 var Pixel = RPixel.Pixel;
 
-var numPixels = 11;
+var numPixels = 64;
 
 var device	= new spi.Spi('/dev/spidev0.0', function(){});
-var pixels 	= new RPixel.PixelBuffer(device, 11);
+var pixels 	= new RPixel.PixelBuffer(device, numPixels);
 //---------------------------------------------------------
 //Do stuff in here
 
@@ -15,9 +15,9 @@ var behavior =
 	"dormant": {
 		"animation": false,
 		"color":{
-			"r": 255,
-			"g": 180,
-			"b": 90
+			"r": 0,
+			"g": 0,
+			"b": 0
 		}
 	},
 	"active": {
@@ -26,15 +26,15 @@ var behavior =
 		"fluid": true,
 		"begin":{
 			"color":{
-				"r": 255,
+				"r": 0,
 				"g": 0,
 				"b": 0
 			}
 		},
 		"end": {
 			"color":{
-				"r": 0,
-				"g": 0,
+				"r": 255,
+				"g": 255,
 				"b": 255
 			}
 		}
