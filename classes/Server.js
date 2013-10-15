@@ -20,6 +20,7 @@ Server.prototype.start = function(onPost){
         res.setHeader('Content-Type', 'application/json');
         onPost(req.body);
         res.writeHead(200);
+        res.end("Post received!");
     });
     this.app.listen(this.port);
 }
