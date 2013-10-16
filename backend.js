@@ -4,18 +4,17 @@ var Lamp = require("./classes/Lamp");
 var TwitterHandler = require("./classes/TwitterHandler");
 
 var dataHand = new DataHandler("behavior_data/");
-var server = new Server(8000);
+var server = new Server(3000);
 var twitterHand = new TwitterHandler();
 var lamp = new Lamp(51);
 
 var initialBehavior = dataHand.loadPreviousBehavior();
-console.log(initialBehavior);
 
 //starts sever and acts as event handler for valid post
-server.start(function(post){
+server.start(function(newBehavior){
 
 	//do validation here...
-	var data = post;
+	var data = newBehavior;
 
 	//if the behavior mode is twitter
 	if(data.mode == 'twitter'){

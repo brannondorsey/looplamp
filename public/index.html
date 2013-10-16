@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Frontend Example</title>
+		
+		<script src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			var behavior = { 
+					"mode": "twitter",
+					"tracking": "helmet",
+					"streamMode": "filter",
+					"dormant": {
+						"animation": false,
+						"color":{
+							"r": 100,
+							"g": 100,
+							"b": 100
+						}
+					},
+					"active": {
+						"animation": true,
+						"time": 1000,
+						"fluid": true,
+						"begin":{
+							"color":{
+								"r": 100,
+								"g": 100,
+								"b": 100
+							}
+						},
+						"end": {
+							"fluid": true,
+							"color":{
+								"r": 255,
+								"g": 255,
+								"b": 255
+							}
+						}
+					}
+				}
+				//EXAMPLE
+				//savePreset: "color-wheel.json", //name of the preset to save this behavior as
+				//loadPrest: "flash.json" //name of the preset to load
+				
+				var socket = io.connect(); //this has to be autodiscover
+				socket.on('connect', function() { 
+					console.log('connected');
+				});
+
+				socket.on('error', function (e) {
+					console.log('System', e ? e : 'A unknown error occurred');
+				});
+				window.document.onload = function(){
+					console.log("mouse down");
+					socket.emit("newBehavior", { newBehavior : behavior });
+				}
+				
+		</script>
+	</head>
+
+	<body onmousedown="sendBehavior()">
+	</body>
+
+</html>

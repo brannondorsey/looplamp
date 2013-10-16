@@ -1,32 +1,31 @@
 var express = require("express");
+var http = require("http");
+var io = require("socket.io");
 
 function Server(port){
     this.app = express();
-    this.app.use(express.bodyParser());
+    this.server = http.createServer(this.app);
     this.port = port;
 }
 
-Server.prototype.start = function(onPost){
-    this.app.use(express.bodyParser());
-    // this.app.use(function(req, res){
-    //     res.header('Access-Control-Allow-Credentials', true);
-    //     res.header('Access-Control-Allow-Origin', req.headers.origin);
-    //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    //     res.header('Access-Control-Allow-Headers',  'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');   
-    // });
-    this.app.post('/', function(req, res) {
-        console.log("I received a POST request. \n It contained: ");
-        console.log(req.body);
-        res.setHeader('Content-Type', 'application/json');
-        onPost(req.body);
-        res.writeHead(200);
-        res.end("Post received!");
-    });
-    this.app.listen(this.port);
-}
+Server.prototype.start = function(onNewBehavior){
+    this.app.use(express.static('/home/pi/looplampbackend/public'));
+    this.server.listen(this.port);
+    console.log("The server was started on port " + this.port);
 
-Server.prototype.getPost = function(){
-    return this.postVals;
+    this.io = io.listen(this.server);
+    this.io.set('log level', 1);
+    
+    var that = this;
+    
+    this.io.sockets.on('connection', function (socket) {  
+      console.log("Socket connection detected");
+      socket.emit('test', {foo: 'bar'});
+      this.emit('message', { message: 'A connection has been made' });
+      socket.on('newBehavior', function(data){
+        onNewBehavior(data); //COME BACK
+      });
+    });
 }
 
 module.exports = Server;
