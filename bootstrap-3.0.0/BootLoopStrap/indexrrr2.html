@@ -34,6 +34,8 @@
 	.green .ui-slider-handle { border-color: #8ae234; }
 	.blue .ui-slider-range { background: #729fcf; }
 	.blue .ui-slider-handle { border-color: #729fcf; }
+
+  .active-button { text-align: center; }
 	</style>
 	
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -162,28 +164,32 @@ function roundedRect(ctx,x,y,width,height,radius){
 				  <div class="green slider"></div>
 				  <div class="blue slider"></div>
   			</div>
-  			<div class="col-md-2">
+  			<div class="col-md-4">
+          <!-- We need to take out the radio option **** we only want the radio functionality (this or that) if you click static it stays clicked, if you click animated that stays clicked and the duration box open underneath -->
           <div class="radio">
             <label>
               <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-            <button type="button" class="btn btn-default btn-xs">Static</button>
+            <button type="button" class="btn btn-default btn-block">Static</button>
             </label>
           </div>
           <div class="radio">
             <label>
               <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-              <button type="button" class="btn btn-default btn-xs">Animated</button>
+              <button type="button" class="btn btn-default btn-block">Animated</button>
             </label>
           </div>
           <div>
+            <div class="active-button">
           <input type="text" placeholder="duration">
         </div>
         </div>
-        <div class="loadLamp col-md-2">
-
-          <button type="button" class="btn btn-success">Load Lamp</button>
         </div>
         
+      </div>
+      <div class="row">
+          <div class="loadLamp col-md-12">
+          <button type="button" class="btn btn-success btn-block">Load Lamp</button>
+        </div>
       </div>
       <!-- 
       <div class="row">
@@ -211,13 +217,33 @@ function roundedRect(ctx,x,y,width,height,radius){
     <div id="collapseThree" class="panel-collapse collapse">
       <div class="swatch panel-body ui-widget-content" >
         <div class="row">
-       
+        
         <!-- RGB SLIDER -->
           <div class="rgb-slider col-md-8">
+            <div class="active-button">
+            <button type="button" class="btn btn-default btn-lg" disabled="disabled">Begin</button>
+            </div>
             <div class="red slider"></div>
             <div class="green slider"></div>
             <div class="blue slider"></div>
           </div>
+          <div class="col-md-4">
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+            <button type="button" class="btn btn-default btn-xs">Static</button>
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+              <button type="button" class="btn btn-default btn-xs">Animated</button>
+            </label>
+          </div>
+          <div>
+          <input type="text" placeholder="duration">
+        </div>
+        </div>
         </div>
       </div>
       <div class="swatch panel-body ui-widget-content" >
@@ -225,12 +251,19 @@ function roundedRect(ctx,x,y,width,height,radius){
        
         <!-- RGB SLIDER -->
         <div class="rgb-slider col-md-8">
+          <div class="active-button">
+          <button type="button" class="btn btn-default btn-lg" disabled="disabled">End</button>
+          </div>
           <div class="red slider"></div>
           <div class="green slider"></div>
           <div class="blue slider"></div>
         </div>
       </div>
-
+      <div class="row">
+          <div class="loadLamp col-md-12">
+          <button type="button" class="btn btn-success">Load Lamp</button>
+        </div>
+      </div>
       </div>
     </div>
   </div>
