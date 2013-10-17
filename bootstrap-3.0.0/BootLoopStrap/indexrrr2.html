@@ -165,19 +165,10 @@ function roundedRect(ctx,x,y,width,height,radius){
 				  <div class="blue slider"></div>
   			</div>
   			<div class="col-md-4">
-          <!-- We need to take out the radio option **** we only want the radio functionality (this or that) if you click static it stays clicked, if you click animated that stays clicked and the duration box open underneath -->
-          <div class="radio">
-            <label>
-              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-            <button type="button" class="btn btn-default btn-block">Static</button>
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-              <button type="button" class="btn btn-default btn-block">Animated</button>
-            </label>
-          </div>
+          
+            <button type="button" class="btn btn-default btn-block" data-toggle="button">Static</button>
+            <button type="button" class="btn btn-default btn-block" data-toggle="button">Animated</button>
+            
           <div>
             <div class="active-button">
           <input type="text" placeholder="duration">
@@ -228,20 +219,12 @@ function roundedRect(ctx,x,y,width,height,radius){
             <div class="blue slider"></div>
           </div>
           <div class="col-md-4">
-          <div class="radio">
-            <label>
-              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-            <button type="button" class="btn btn-default btn-xs">Static</button>
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-              <button type="button" class="btn btn-default btn-xs">Animated</button>
-            </label>
-          </div>
+          <button type="button" class="btn btn-default btn-block" data-toggle="button">Static</button>
+            <button type="button" class="btn btn-default btn-block" data-toggle="button">Animated</button>
           <div>
+            <div class="active-button">
           <input type="text" placeholder="duration">
+        </div>
         </div>
         </div>
         </div>
@@ -261,7 +244,7 @@ function roundedRect(ctx,x,y,width,height,radius){
       </div>
       <div class="row">
           <div class="loadLamp col-md-12">
-          <button type="button" class="btn btn-success">Load Lamp</button>
+          <button type="button" class="btn btn-success btn-block">Load Lamp</button>
         </div>
       </div>
       </div>
