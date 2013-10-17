@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="ico/favicon.png">
 
-    <title>dorrrrr</title>
+    <title>Loop Lamp</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -36,6 +36,7 @@
 	.blue .ui-slider-handle { border-color: #729fcf; }
 
   .active-button { text-align: center; }
+  .panel-title { text-align: center; }
 	</style>
 	
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -50,18 +51,18 @@
       if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
 
-        ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-        ctx.fillRect (30, 30, 55, 50);
-
         for(i=0;i<12;i++){
           roundedRect(ctx,i*40,10,30,15,5);
+        }
+        for(i=1;i<3;i++){
+          roundedRect(ctx,0,i*60,30,15,5);
         }
         for(i=0;i<12;i++){
           roundedRect(ctx,i*40,180,30,15,5);
         }
-    roundedRect(ctx,135,53,49,33,10);
-
-
+        for(i=1;i<3;i++){
+          roundedRect(ctx,440,i*60,30,15,5);
+        }
       }
     }
 
@@ -127,7 +128,6 @@ function roundedRect(ctx,x,y,width,height,radius){
       </div>
 
       <div class="panel-group" id="accordion">
-        <form>
       <!-- TWITTER SECTION -->
       
         <div class="panel panel-default">
@@ -283,7 +283,6 @@ function roundedRect(ctx,x,y,width,height,radius){
       </div>
     </div>
   </div>
-</form>
 </div>
 </div>
 
