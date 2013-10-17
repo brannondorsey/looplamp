@@ -5,34 +5,35 @@
 		
 		<script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" charset="utf-8">
+
 			var behavior = { 
 					"mode": "twitter",
-					"tracking": "helmet",
+					"tracking": "awesome tweet",
 					"streamMode": "filter",
 					"dormant": {
 						"animation": false,
 						"color":{
 							"r": 100,
-							"g": 100,
+							"g": 0,
 							"b": 100
 						}
 					},
 					"active": {
 						"animation": true,
-						"time": 1000,
+						"time": 500,
 						"fluid": true,
 						"begin":{
 							"color":{
-								"r": 100,
-								"g": 100,
-								"b": 100
+								"r": 255,
+								"g": 0,
+								"b": 0
 							}
 						},
 						"end": {
 							"fluid": true,
 							"color":{
-								"r": 255,
-								"g": 255,
+								"r": 0,
+								"g": 0,
 								"b": 255
 							}
 						}
@@ -42,23 +43,72 @@
 				//savePreset: "color-wheel.json", //name of the preset to save this behavior as
 				//loadPrest: "flash.json" //name of the preset to load
 				
+				
 				var socket = io.connect(); //this has to be autodiscover
+
+				//you connected
 				socket.on('connect', function() { 
 					console.log('connected');
+					updateBehavior();
+				});
+
+				//you successfully uploaded your edits to the lamp
+				socket.on('uploaded successfully', function(behavior){
+
+					//make all of the slider updates here...
+					updateGui(behavior);
+					console.log("The behavior has been updated! The new behavior is: ");
+					console.log(data);
+				});
+
+				//behavior was updated by someone else
+				socket.on('behavior updated', function(behavior){
+
+					updateGui(behavior);
+				});
+
+				//preset loaded succesfully
+				socket.on('preset loaded', function(){
+
+				});
+
+				//someone else is editing
+				socket.on('editing', function(behavior){
+					updateGui(behavior);
 				});
 
 				socket.on('error', function (e) {
 					console.log('System', e ? e : 'A unknown error occurred');
 				});
-				window.document.onload = function(){
-					console.log("mouse down");
-					socket.emit("newBehavior", { newBehavior : behavior });
+
+				//upload a new behavior to the lamp
+				function updateBehavior(){
+					socket.emit('behavior uploaded', behavior);
 				}
-				
+
+				//called when you make a change that you want to see on the lamp 
+				//and update everyone else's gui
+				function sendEdit(){
+					socket.emit('editing behavior', behavior);
+				}
+
+				//request a preset to be loaded
+				function loadPreset(){
+					var data = {
+						filename: "presetFile.json",
+						state: "dormant"
+					}
+					socket.emit('load preset', data);
+				}
+
+				function updateGui(){
+					//code to update the gui here
+				}
+
 		</script>
 	</head>
 
-	<body onmousedown="sendBehavior()">
+	<body>
 	</body>
 
 </html>

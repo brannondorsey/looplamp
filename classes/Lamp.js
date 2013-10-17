@@ -63,7 +63,6 @@ Lamp.prototype._writeBehavior = function(dormantOrActiveObj, isActive){
 		//note: the color object's properties being stored in r, g, b are
 		//currently STRINGs. If this is a problem use a method like Throb._parseColorFromJSON
 		var color = state.color;
-		
 		this.pixels.fillRGB(color.r, color.g, color.b);
 		this.pixels.update();
 		//if this is active then run the dormant state once the active time is up

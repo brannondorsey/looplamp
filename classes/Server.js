@@ -15,17 +15,7 @@ Server.prototype.start = function(onNewBehavior){
 
     this.io = io.listen(this.server);
     this.io.set('log level', 1);
-    
-    var that = this;
-    
-    this.io.sockets.on('connection', function (socket) {  
-      console.log("Socket connection detected");
-      socket.emit('test', {foo: 'bar'});
-      this.emit('message', { message: 'A connection has been made' });
-      socket.on('newBehavior', function(data){
-        onNewBehavior(data); //COME BACK
-      });
-    });
+    this.sockets = this.io.sockets;
 }
 
 module.exports = Server;
