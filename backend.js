@@ -8,8 +8,6 @@ var server = new Server(3000);
 var twitterHand = new TwitterHandler();
 var lamp = new Lamp(51);
 
-var isEditing = false;
-
 var initialBehavior = dataHand.loadPreviousBehavior();
 
 //starts sever and acts as event handler for valid post
@@ -27,6 +25,9 @@ server.sockets.on('connection', function(socket){
 					updateBehavior(saveData);
 					console.log("data saved successfully!");
 
+					lamp.setPreviewing(false);
+					lamp.setDormant();
+
 					//send the data back to all other sockets so that they
 					//can update their sliders
 					//socket.broadcast.emit('behavior updated', data); //COME BACK AND UNCOMMENT
@@ -37,11 +38,14 @@ server.sockets.on('connection', function(socket){
 	});
 
 	//someone is editing the lamp
-	socket.on('editing behavior', function(behavior){
+	socket.on('editing behavior', function(data){
+
+		//preview the color on the lamp
+		lamp.preview(data.color);
 
 		//send the
 		//socket.broadcast.emit('editing', data); //COME BACK AND UNCOMMENT
-		server.sockets.emit('editing', behavior);
+		server.sockets.emit('editing', data.behavior);
 	});
 
 	socket.on('load preset', function(data){
@@ -116,7 +120,9 @@ function respondToTweet(tweetData){
 	if(!lamp.isActive){
 		twitterHand.log(tweetData);
 
-		//logic for flashing lights goes here...
-		lamp.setActive();
+		if(!lamp.previewing){
+			//logic for flashing lights goes here...
+			lamp.setActive();
+		}
 	}
 }

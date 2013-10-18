@@ -8,14 +8,14 @@
 
 			var behavior = { 
 					"mode": "twitter",
-					"tracking": "awesome tweet",
+					"tracking": "something that no one will ever tweet",
 					"streamMode": "filter",
 					"dormant": {
 						"animation": false,
 						"color":{
-							"r": 100,
-							"g": 0,
-							"b": 100
+							"r": 0,
+							"g": 100,
+							"b": 0
 						}
 					},
 					"active": {
@@ -63,7 +63,7 @@
 
 				//behavior was updated by someone else
 				socket.on('behavior updated', function(behavior){
-
+					console.log("The behavior was updated");
 					updateGui(behavior);
 				});
 
@@ -89,7 +89,15 @@
 				//called when you make a change that you want to see on the lamp 
 				//and update everyone else's gui
 				function sendEdit(){
-					socket.emit('editing behavior', behavior);
+					var data = {
+						behavior: behavior,
+						previewColor: {
+							r: 50,
+							g: 70,
+							b: 180
+						}
+					}
+					socket.emit('editing behavior', data);
 				}
 
 				//request a preset to be loaded

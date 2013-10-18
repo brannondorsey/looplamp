@@ -6,17 +6,35 @@ var Pixel = RPixel.Pixel;
 function Lamp(numPixels){
 	this.device	= new spi.Spi('/dev/spidev0.0', function(){});
 	this.pixels = new RPixel.PixelBuffer(this.device, numPixels);
+	this.previewing = false;
 	//this.isActive = true; //hypothetically this should block any active 
 	//states from happening until this.start
 }
 
+//for previewing the lamp
+Lamp.prototype.preview = function(color){
+	this.pixels.fillRGB(color.r, color.g, color.b);
+	this.pixels.update();
+	this.setPreviewing(true);
+}
+
+Lamp.prototype.setPreviewing = function(bool){
+	this.previewing = Boolean(bool);
+}
+
 Lamp.prototype.updateBehavior = function(behavior){
-	this.behavior = behavior; 
+	this.behavior = behavior;
+	this._dormantState(); //run the dormant state to change the color if it needs it
 }
 
 Lamp.prototype.setActive = function(){
 	this.isActive = true;
 	this._activeState();
+}
+
+Lamp.prototype.setDormant = function(){
+	this.isActive = false;
+	this._dormantState();
 }
 
 Lamp.prototype.start = function(behavior){
