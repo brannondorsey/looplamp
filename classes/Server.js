@@ -9,7 +9,7 @@ function Server(port){
 }
 
 Server.prototype.start = function(onNewBehavior){
-    this.app.use(express.static('/home/pi/looplampbackend/public'));
+    this.app.use(express.static('/home/pi/looplamp/public'));
     this.server.listen(this.port);
     console.log("The server was started on port " + this.port);
 

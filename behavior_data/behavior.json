@@ -1,1 +1,1 @@
-{"mode":"twitter","tracking":"something that no one will ever tweet","streamMode":"filter","dormant":{"animation":false,"color":{"r":0,"g":100,"b":0}},"active":{"animation":true,"time":500,"fluid":true,"begin":{"color":{"r":255,"g":0,"b":0}},"end":{"fluid":true,"color":{"r":0,"g":0,"b":255}}}}
+{"mode":"twitter","tracking":"lightupchicago","streamMode":"filter","dormant":{"animation":false,"color":{"r":0,"g":100,"b":0}},"active":{"animation":true,"time":500,"fluid":true,"begin":{"color":{"r":255,"g":0,"b":0}},"end":{"fluid":true,"color":{"r":0,"g":0,"b":255}}}}
