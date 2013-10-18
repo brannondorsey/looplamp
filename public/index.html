@@ -1,122 +1,358 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Frontend Example</title>
-		
-		<script src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" charset="utf-8">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="ico/favicon.png">
 
-			var behavior = { 
-					"mode": "twitter",
-					"tracking": "something that no one will ever tweet",
-					"streamMode": "filter",
-					"dormant": {
-						"animation": false,
-						"color":{
-							"r": 0,
-							"g": 100,
-							"b": 0
-						}
-					},
-					"active": {
-						"animation": true,
-						"time": 500,
-						"fluid": true,
-						"begin":{
-							"color":{
-								"r": 255,
-								"g": 0,
-								"b": 0
-							}
-						},
-						"end": {
-							"fluid": true,
-							"color":{
-								"r": 0,
-								"g": 0,
-								"b": 255
-							}
-						}
-					}
-				}
-				//EXAMPLE
-				//savePreset: "color-wheel.json", //name of the preset to save this behavior as
-				//loadPrest: "flash.json" //name of the preset to load
-				
-				
-				var socket = io.connect(); //this has to be autodiscover
+    <title>Loop Lamp</title>
 
-				//you connected
-				socket.on('connect', function() { 
-					console.log('connected');
-					updateBehavior();
-				});
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
 
-				//you successfully uploaded your edits to the lamp
-				socket.on('uploaded successfully', function(behavior){
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+    <link href="css/myStyles.css" rel="stylesheet">
+	<link href="css/jquery.ui.all.css" rel="stylesheet">
+	
+		<!-- <link rel="stylesheet" href="css/ui-demos.css"> -->
+	 
+	<style>
+	.red, .green, .blue {
+		float: left;
+		clear: left;
+		width: 90%;
+		margin: 15px;
+		border: none;
+	}
+	.swatch { }
+	.red .ui-slider-range { background: #ef2929; }
+	.red .ui-slider-handle { border-color: #ef2929; }
+	.green .ui-slider-range { background: #8ae234; }
+	.green .ui-slider-handle { border-color: #8ae234; }
+	.blue .ui-slider-range { background: #729fcf; }
+	.blue .ui-slider-handle { border-color: #729fcf; }
 
-					//make all of the slider updates here...
-					updateGui(behavior);
-					console.log("The behavior has been updated! The new behavior is: ");
-					console.log(data);
-				});
+  .active-button { text-align: center; }
+  .panel-title { text-align: center; }
+	</style>
+	
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
 
-				//behavior was updated by someone else
-				socket.on('behavior updated', function(behavior){
-					console.log("The behavior was updated");
-					updateGui(behavior);
-				});
+    <script type="application/javascript">
+    function draw() {
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
 
-				//preset loaded succesfully
-				socket.on('preset loaded', function(){
+        for(i=0;i<12;i++){
+          roundedRect(ctx,i*40,10,30,15,5);
+        }
+        for(i=1;i<3;i++){
+          roundedRect(ctx,0,i*60,30,15,5);
+        }
+        for(i=0;i<12;i++){
+          roundedRect(ctx,i*40,180,30,15,5);
+        }
+        for(i=1;i<3;i++){
+          roundedRect(ctx,440,i*60,30,15,5);
+        }
+      }
+    }
 
-				});
+    // A utility function to draw a rectangle with rounded corners.
 
-				//someone else is editing
-				socket.on('editing', function(behavior){
-					updateGui(behavior);
-				});
+function roundedRect(ctx,x,y,width,height,radius){
+  ctx.beginPath();
+  ctx.moveTo(x,y+radius);
+  ctx.lineTo(x,y+height-radius);
+  ctx.quadraticCurveTo(x,y+height,x+radius,y+height);
+  ctx.lineTo(x+width-radius,y+height);
+  ctx.quadraticCurveTo(x+width,y+height,x+width,y+height-radius);
+  ctx.lineTo(x+width,y+radius);
+  ctx.quadraticCurveTo(x+width,y,x+width-radius,y);
+  ctx.lineTo(x+radius,y);
+  ctx.quadraticCurveTo(x,y,x,y+radius);
+  ctx.stroke();
+}
+  </script>
+    
+   
+  </head>
 
-				socket.on('error', function (e) {
-					console.log('System', e ? e : 'A unknown error occurred');
-				});
+  <body class="ui-widget-content"  onload="draw();">
 
-				//upload a new behavior to the lamp
-				function updateBehavior(){
-					socket.emit('behavior uploaded', behavior);
-				}
+    <!-- Wrap all page content here -->
+    <div id="wrap">
 
-				//called when you make a change that you want to see on the lamp 
-				//and update everyone else's gui
-				function sendEdit(){
-					var data = {
-						behavior: behavior,
-						previewColor: {
-							r: 50,
-							g: 70,
-							b: 180
-						}
-					}
-					socket.emit('editing behavior', data);
-				}
+      <!-- Fixed navbar -->
+      <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="indexrrr.html">Loop Lamp</a>
+          </div>
+          <div class="collapse navbar-collapse">
+            <!--
+            <ul class="nav navbar-nav">
+              <li><a href="#">Home</a></li>
+              <li><a href="twitter.html">Twitter Mode</a></li>
+            <li><a href="dormant.html">Dormant Mode</a></li>
+            <li><a href="active.html">Active Mode</a></li>
+            <li><a href="custom.html">Custom Mode</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+            </ul> -->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
 
-				//request a preset to be loaded
-				function loadPreset(){
-					var data = {
-						filename: "presetFile.json",
-						state: "dormant"
-					}
-					socket.emit('load preset', data);
-				}
+      <div class="panel-group" id="accordion">
+      <!-- TWITTER SECTION -->
+      
+        <div class="panel panel-default">
+          <div class="panel-heading">
+          <h4 class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            TWITTER mode
+            </a>
+          </h4>
+        </div>
 
-				function updateGui(){
-					//code to update the gui here
-				}
+      <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body"><h1>Listening for <input type="text" placeholder="#LightUpChicago"> on <input type="text" placeholder="anyone's"> Twitter account. </h1>	
+      </div>
+    </div>
+  </div>
 
-		</script>
-	</head>
+  <!-- DORMANT SECTION -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          DORMANT Mode
+        </a>
+      </h4>
+    </div>
 
-	<body>
-	</body>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="swatch panel-body ui-widget-content" >
+      	<div class="row">
+        <!-- RGB SLIDER -->
+  			<div class="rgb-slider col-md-8">
+  				<div class="red slider"></div>
+				  <div class="green slider"></div>
+				  <div class="blue slider"></div>
+  			</div>
+  			<div class="col-md-4">
+          
+            <button type="button" class="btn btn-default btn-block" data-toggle="button">Static</button>
+            <button type="button" class="btn btn-default btn-block" data-toggle="button">Animated</button>
+            
+          <div>
+            <div class="active-button">
+          <input type="text" placeholder="duration">
+        </div>
+        </div>
+        </div>
+        
+      </div>
+      <div class="row">
+          <div class="loadLamp col-md-12">
+          <button type="button" class="btn btn-success btn-block">Load Lamp</button>
+        </div>
+      </div>
+      <!-- 
+      <div class="row">
+      <div class="col-md-4 offset2">
+		<button type="button" class="btn btn-success">Load Preset</button>
+	  </div>	
+	  <div class="col-md-4 offset2">
+		<button type="button" class="btn btn-info">Save Preset</button>
+      </div>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
+  
+  <!-- ACTIVE SECTION -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          ACTIVE Mode
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="swatch panel-body ui-widget-content" >
+        <div class="row">
+        
+        <!-- RGB SLIDER -->
+          <div class="rgb-slider col-md-8">
+            <div class="active-button">
+            <button type="button" class="btn btn-default btn-lg" disabled="disabled">Begin</button>
+            </div>
+            <div class="red slider"></div>
+            <div class="green slider"></div>
+            <div class="blue slider"></div>
+          </div>
+          <div class="col-md-4">
+          <button type="button" class="btn btn-default btn-block" data-toggle="button">Static</button>
+            <button type="button" class="btn btn-default btn-block" data-toggle="button">Animated</button>
+          <div>
+            <div class="active-button">
+          <input type="text" placeholder="duration">
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+      <div class="swatch panel-body ui-widget-content" >
+      <div class="row">
+       
+        <!-- RGB SLIDER -->
+        <div class="rgb-slider col-md-8">
+          <div class="active-button">
+          <button type="button" class="btn btn-default btn-lg" disabled="disabled">End</button>
+          </div>
+          <div class="red slider"></div>
+          <div class="green slider"></div>
+          <div class="blue slider"></div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="loadLamp col-md-12">
+          <button type="button" class="btn btn-success btn-block">Load Lamp</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- CUSTOM SECTION -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+          CUSTOM Mode
+        </a>
+      </h4>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse">
+      <div class="panel-body">
+        <canvas id="canvas" width="600" height="225"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit"><a href="" target="_blank">DSSG</a>, <a href="" target="_blank">Inventables</a>, <a href="" target="_blank">MP</a>, <a href="" target="_blank">BD</a>, & <a href="http://notandrewkaye.com" target="_blank">AK</a>.</p>
+      </div>
+    </div>
+    
+  <script src="js/jquery-1.9.1.js"></script>
+	<script src="ui/jquery.ui.core.js"></script>
+	<script src="ui/jquery.ui.widget.js"></script>
+	<script src="ui/jquery.ui.mouse.js"></script>
+	<script src="ui/jquery.ui.slider.js"></script>
+
+	<script>
+	function hexFromRGB(r, g, b) {
+		var hex = [
+			r.toString( 16 ),
+			g.toString( 16 ),
+			b.toString( 16 )
+		];
+		$.each( hex, function( nr, val ) {
+			if ( val.length === 1 ) {
+				hex[ nr ] = "0" + val;
+			}
+		});
+		return hex.join( "" ).toUpperCase();
+	}
+	function refreshSwatch(red, green, blue, $swatch) {
+		// var red = $red.slider( "value" ),
+		// 	green = $green.slider( "value" ),
+		// 	blue = $blue.slider( "value" );
+    var hex = hexFromRGB( red, green, blue );
+    console.log(hex);
+		$swatch.css( "background-color", "#" + hex );
+	}
+	$(function() {
+    // var $red;
+    // var $blue;
+    // var $green;
+    var $swatch;
+		$( ".rgb-slider" ).each(function(){
+
+      // $($red).slider();
+      // $blue.slider();
+      // $green.slider();
+      
+      $(this).find('.slider').each(function(){
+        $(this).slider({
+         orientation: "horizontal",
+         range: "min",
+         max: 255,
+         value: 127,
+         slide: function(event, ui){
+          $swatch = $(this).parent().parent().parent();
+
+          red = $(this).parent().find('.red').slider("value");
+          green = $(this).parent().find('.green').slider("value");
+          blue = $(this).parent().find('.blue').slider("value");
+          // console.log($red.slider('value'));
+          refreshSwatch(red, green, blue, $swatch);
+        },
+        change: function(event, ui){
+          $swatch = $(this).parent().parent().parent();
+          red = $(this).parent().find('.red').slider("value");
+          green = $(this).parent().find('.green').slider("value");
+          blue = $(this).parent().find('.blue').slider("value");
+          // console.log($red.slider('value'));
+          refreshSwatch(red, green, blue, $swatch);        }
+      });
+      });
+
+    });
+    // $(".slider").each(function(){$(this).slider("value", 40); });
+		// $( ".slider" ).each(function(){$(this).slider( "value", 40 );});
+		 $( ".red" ).slider( "value", 90 );
+     $( ".green" ).slider( "value", 188 );
+		 $( ".blue" ).slider( "value", 255 );
+	});
+	</script>
+    
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="js/bootstrap.min.js"></script>
+    
+  </body>
 </html>
