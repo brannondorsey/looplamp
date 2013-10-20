@@ -20,9 +20,9 @@ var behavior = {
 	"dormant": {
 		"animation": false,
 		"color":{
-			"r": 50,
-			"g": 50,
-			"b": 50
+			"r": 127,
+			"g": 127,
+			"b": 127
 		}
 	},
 	"active": {
@@ -31,9 +31,9 @@ var behavior = {
 		"fluid": true,
 		"begin":{
 			"color":{
-				"r": 50,
-				"g": 50,
-				"b": 50
+				"r": 127,
+				"g": 127,
+				"b": 127
 			}
 		},
 		"end": {
