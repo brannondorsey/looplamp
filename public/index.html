@@ -48,21 +48,21 @@
                     <div class="control">
                         <h3>Dormant</h3>
                         The normal color of the lamp.
-                        <div class="slider-box">
-                                <div id="red"></div>
-                                <div id="green"></div>
-                                <div id="blue"></div>    
+                        <div class="slider-box dormant">
+                            <div class="color-slider red"></div>
+                            <div class="color-slider green"></div>
+                            <div class="color-slider blue"></div>    
                         </div>
                     </div>
 
                     <div class="control">
                         <h3>Active</h3>
                         The color of the lamp when someone tweets:
-                        <input id="twitter-input" type="text" placeholder="#lightupchicago" value="#lightupchicago" onkeypress="this.style.width = ((this.value.length + 1) * 9) + 'px';">
-                        <div class="slider-box">
-                                <div id="red"></div>
-                                <div id="green"></div>
-                                <div id="blue"></div>    
+                        <input id="twitter-tracking" type="text" placeholder="#lightupchicago" onkeypress="this.style.width = ((this.value.length + 1) * 9) + 'px';">
+                        <div class="slider-box active">
+                                <div class="color-slider red"></div>
+                                <div class="color-slider green"></div>
+                                <div class="color-slider blue"></div>    
                         </div>
                     </div>
                 </section>
