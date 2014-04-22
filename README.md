@@ -1,9 +1,27 @@
-#Loop Lamp Interactive Interface
+#Looplamp
 
-This repository contains the code for the [Light Up Chicago](http://lightupchicago.org/) project. 
+This repository contains the code for the [Light Up Chicago](http://lightupchicago.org/) project.
 
-Below is a prototype interface that allows users to program their Loop lamps. This example is not a representation of how the final version of this page will look but rather an illustration of its interactive and programmable features. 
+![Screenshot](images/front_end_screenshot.png)  
 
-Using the interface below lamp owners will be able to control the colors and behaviors of their lamps as well as create, save, and load preset behaviors. Owners will also be able to create their own custom animations as each individual LED on the Loop lamp is individually controllable.  
+Looplamp is developed by [DSSG](http://dssg.io), [Inventables](http://inventables.com), @mperez4, @brannondorsey, and @notandrewkay. 
 
-![Input page layout](images/input_demo.png)
+# Web interface feature list
+
+Features for Looplamp 1.5
+
+- Color sliders are live auto-updated on all connected devices using socket.io.
+- Autoupload: The lamp immediately visualizes any colors from the sliders as they are moved.   1-2 seconds after they are released the behavior is saved and "preview" mode is finished with no button press needed.
+- Preset animations: A list of animation demos that come pre-loaded with the lamp. 
+	- Random color blink
+	- Serene color change
+	- Spiral color
+	- Volume visualizer (if mic-plugged in)
+- Info and links to external documentation/help resources.
+
+Features for Looplamp 2.0
+
+- On/off button from the browser.
+- Custom animation tool
+- Full documentation and "Getting Started" resources + API reference
+- Possibly connected to Google Coder <-- unsure if this is necessary. 
