@@ -2,7 +2,7 @@
 
 This repository contains the code for the [Light Up Chicago](http://lightupchicago.org/) project.
 
-![Screenshot](images/front_end_screenshot.png)  
+![Screenshot](images/front_end_screenshot.jpg)  
 
 Looplamp is developed by [DSSG](http://dssg.io), [Inventables](http://inventables.com), @mperez4, @brannondorsey, and @notandrewkay. 
 
