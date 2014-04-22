@@ -1,3 +1,4 @@
 .DS_Store
-behavior_data/
+!behavior_data/example_data.json
+behavior_data/*
 ._*
