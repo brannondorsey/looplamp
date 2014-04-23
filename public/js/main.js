@@ -34,7 +34,7 @@ $(document).ready(function(){
 		});			 
 		
 		socket = io.connect(url);
-		
+		console.log('socket loaded!');
 		socket.on('updated', function (update) {
 		   onUpdateRecieved(update);
 		});
@@ -107,7 +107,7 @@ function loadBehavior(callback) {
 			});
 
 		$("#twitter-tracking").attr("value", behavior.tracking);
-
+		callback();
 	});
 }
 
