@@ -18,6 +18,7 @@ Features for Looplamp 1.5
 	- Spiral color
 	- Volume visualizer (if mic-plugged in)
 - Info and links to external documentation/help resources.
+- Easily editable config file for settings and oath keys.
 
 Features for Looplamp 2.0
 

@@ -9,9 +9,8 @@ $(document).ready(function(){
 	$(".color-slider").slider({
 		orientation: "horizontal",
 		range: "min",
-		max: 255
-		// slide: refreshSwatch,
-		// change: refreshSwatch
+		max: 255,
+		min: 0
 	});
 
 	// make all sliders touch draggable
