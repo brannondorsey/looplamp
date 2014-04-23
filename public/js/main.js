@@ -61,7 +61,7 @@ $(document).ready(function(){
 	});
 
 	// make all sliders touch draggable
-	$('.ui-slider-handle').draggable();
+	$('.slider').draggable();
 
 	loadBehavior();
 
@@ -82,11 +82,11 @@ $(document).ready(function(){
 	// onUpdateRecieved('behavior.dormant.main.color.r',
 	// 				 '.dormant .color-slider.red',
 	// 				 200);
-	socket = io.connect('http://localhost:' + port);
+	// socket = io.connect('http://localhost:' + port);
 	
-	socket.on('updated', function (update) {
-	   onUpdateRecieved(update);
-	});
+	// socket.on('updated', function (update) {
+	//    onUpdateRecieved(update);
+	// });
 });
 
 // code to load the current behavior
@@ -154,12 +154,12 @@ function loadBehavior() {
 }
 
 function sendUpdate(javascript, css, value, isSlider) {
-	socket.emit("update", {
-		javascript: javascript,
-		css: css,
-		value: value,
-		isSlider: isSlider
-	});
+	// socket.emit("update", {
+	// 	javascript: javascript,
+	// 	css: css,
+	// 	value: value,
+	// 	isSlider: isSlider
+	// });
 }
 
 /*
