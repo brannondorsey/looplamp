@@ -60,6 +60,9 @@ $(document).ready(function(){
 		// change: refreshSwatch
 	});
 
+	// make all sliders touch draggable
+	$('.ui-slider-handle').draggable();
+
 	loadBehavior();
 
 	$("#twitter-tracking").on('keypress', function(evt){

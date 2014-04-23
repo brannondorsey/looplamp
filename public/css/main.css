@@ -57,6 +57,8 @@ textarea {
 }
 
 
+
+
 /* ===== Initializr Styles ==================================================
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
@@ -214,6 +216,10 @@ input[type="text"] {
     background-image: none;
 }
 
+.ui-slider-handle {
+    -ms-touch-action: none;
+    touch-action: none;
+}
 .color-slider.red .ui-slider-range { background: #ef2929; }
 .color-slider.red .ui-slider-handle { border-color: #ef2929; }
 .color-slider.green .ui-slider-range { background: #8ae234; }
