@@ -82,11 +82,13 @@ $(document).ready(function(){
 	// onUpdateRecieved('behavior.dormant.main.color.r',
 	// 				 '.dormant .color-slider.red',
 	// 				 200);
-	// socket = io.connect('http://localhost:' + port);
+	// 				 
+	console.log("Thing: " + location.protocol + "//" + location.host + port);
+	socket = io.connect(location.protocol + "//" + location.host + port);
 	
-	// socket.on('updated', function (update) {
-	//    onUpdateRecieved(update);
-	// });
+	socket.on('updated', function (update) {
+	   onUpdateRecieved(update);
+	});
 });
 
 // code to load the current behavior
@@ -154,12 +156,12 @@ function loadBehavior() {
 }
 
 function sendUpdate(javascript, css, value, isSlider) {
-	// socket.emit("update", {
-	// 	javascript: javascript,
-	// 	css: css,
-	// 	value: value,
-	// 	isSlider: isSlider
-	// });
+	socket.emit("update", {
+		javascript: javascript,
+		css: css,
+		value: value,
+		isSlider: isSlider
+	});
 }
 
 /*
