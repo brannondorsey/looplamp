@@ -33,7 +33,7 @@ fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, 
 		});
 	});
 
-	twitterHand.onTweetReceived('filter', initialBehavior.tracking, function(tweetData){
+	twitterHand.onTweetReceived('filter', behavior.tracking, function(tweetData){
 		respondToTweet(tweetData);
 	});
 
