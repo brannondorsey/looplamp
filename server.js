@@ -44,9 +44,15 @@ fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, 
 				}, updateDelay);
 			} else { // if update is tracking
 				if (update.css == "#twitter-tracking") {
-					twitterHand.updateStream('filter', behavior.tracking, function(tweetData){
-						respondToTweet(tweetData);
-					});
+					console.log("got here");
+					if(twitterHand.needsNewStream(behavior)){
+						twitterHand.updateStream(behavior.streamMode, behavior.tracking, function(tweetData){
+							respondToTweet(tweetData);
+							//dont even FUCKING think about putting anything else in here...
+							//it will cause the most unnoticable bug that will ruin your life
+							//because this registers a new event that overrides onTweetRecieved
+						});
+					}
 				}
 			}
 			
