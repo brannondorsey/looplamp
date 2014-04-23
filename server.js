@@ -44,7 +44,9 @@ fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, 
 				}, updateDelay);
 			} else { // if update is tracking
 				if (update.css == "#twitter-tracking") {
-					console.log("got here");
+					console.log("Now tracking: " + behavior.tracking);
+					console.log("javascript: " + update.value);
+					console.log("value: '" + update.value + "'");
 					if(twitterHand.needsNewStream(behavior)){
 						twitterHand.updateStream(behavior.streamMode, behavior.tracking, function(tweetData){
 							respondToTweet(tweetData);

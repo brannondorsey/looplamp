@@ -26,6 +26,7 @@ $(document).ready(function(){
 
 		$("#twitter-tracking").on('blur', function(evt){
 			behavior.tracking = $("#twitter-tracking").attr("value");
+			console.log("#twitter-tracking value: " + $("#twitter-tracking").attr("value"));
 			sendUpdate('behavior.tracking', 
 					   '#twitter-tracking', 
 					   behavior.tracking,
