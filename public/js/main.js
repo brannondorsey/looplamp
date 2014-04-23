@@ -1,54 +1,8 @@
 // serve this from localhost:port/behavior
-var behavior = {
-    "mode": "twitter",
-    "tracking": "#lightupchicago",
-    "streamMode": "filter",
-    "dormant": {
-        "animation": false,
-        "main": {
-        	"color": {
-	            "r": 0,
-	            "g": 100,
-	            "b": 100
-	        }
-        },
-        "secondary": {
-        	"color": {
-	            "r": 0,
-	            "g": 100,
-	            "b": 0
-	        }
-        }
-    },
-    "active": {
-        "animation": false,
-        "time": 500,
-        "fluid": true,
-        "main": {
-            "color": {
-                "r": 240,
-                "g": 0,
-                "b": 0
-            }
-        },
-        "secondary": {
-            "fluid": true,
-            "color": {
-                "r": 0,
-                "g": 0,
-                "b": 255
-            }
-        }
-    }
-}
 
 var port = 3333;
 var socket;
-
-// var test = {foo:{bar: 1}};
-// test.foo.bar = 5;
-// console.log(test.foo.bar);
-// console.log(eval('test.foo.bar'));
+var url = location.protocol + "//" + location.host;
 
 $(document).ready(function(){
 
@@ -63,96 +17,98 @@ $(document).ready(function(){
 	// make all sliders touch draggable
 	$('.slider').draggable();
 
-	loadBehavior();
+	loadBehavior(function(){
 
-	$("#twitter-tracking").on('keypress', function(evt){
+		$("#twitter-tracking").on('keypress', function(evt){
 		if (evt.keyCode == 13) {
 			$(this).blur();
 		}
-	});
+		});
 
-	$("#twitter-tracking").on('blur', function(evt){
-		behavior.tracking = $("#twitter-tracking").attr("value");
-		sendUpdate('behavior.tracking', 
-				   '#twitter-tracking', 
-				   behavior.tracking,
-				   false);
-	});
-
-	// onUpdateRecieved('behavior.dormant.main.color.r',
-	// 				 '.dormant .color-slider.red',
-	// 				 200);
-	// 				 
-	console.log("Thing: " + location.protocol + "//" + location.host);
-	socket = io.connect(location.protocol + "//" + location.host);
-	
-	socket.on('updated', function (update) {
-	   onUpdateRecieved(update);
+		$("#twitter-tracking").on('blur', function(evt){
+			behavior.tracking = $("#twitter-tracking").attr("value");
+			sendUpdate('behavior.tracking', 
+					   '#twitter-tracking', 
+					   behavior.tracking,
+					   false);
+		});			 
+		
+		socket = io.connect(url);
+		
+		socket.on('updated', function (update) {
+		   onUpdateRecieved(update);
+		});
 	});
 });
 
 // code to load the current behavior
-function loadBehavior() {
+function loadBehavior(callback) {
 	
-	// set values based on behavior and register on slide events
-	$(".dormant .color-slider.red")
-		.slider("value", behavior.dormant.main.color.r)
-		.on("slide", function(event, ui) {
-			behavior.dormant.main.color.r = ui.value;
-			sendUpdate('behavior.dormant.main.color.r',
-						".dormant .color-slider.red",
-						ui.value,
-						true);
-		});
-	$(".dormant .color-slider.green")
-		.slider("value", behavior.dormant.main.color.g)
-		.on("slide", function(event, ui) {
-			behavior.dormant.main.color.g = ui.value;
-			sendUpdate('behavior.dormant.main.color.g',
-						".dormant .color-slider.green",
-						ui.value,
-						true);
-		});
-	$(".dormant .color-slider.blue")
-		.slider("value", behavior.dormant.main.color.b)
-		.on("slide", function(event, ui) {
-			behavior.dormant.main.color.b = ui.value;
-			sendUpdate('behavior.dormant.main.color.b',
-						".dormant .color-slider.blue",
-						ui.value,
-						true);
-		});
+	$.getJSON(url + "/behavior", function(data){
+		
+		behavior = data;
 
-	// same for active
-	$(".active .color-slider.red")
-		.slider("value", behavior.active.main.color.r)
-		.on("slide", function(event, ui) {
-			behavior.active.main.color.r = ui.value;
-			sendUpdate('behavior.active.main.color.r',
-						".active .color-slider.red",
-						ui.value,
-						true);
-		});
-	$(".active .color-slider.green")
-		.slider("value", behavior.active.main.color.g)
-		.on("slide", function(event, ui) {
-			behavior.active.main.color.g = ui.value;
-			sendUpdate('behavior.active.main.color.g',
-						".active .color-slider.green",
-						ui.value,
-						true);
-		});
-	$(".active .color-slider.blue")
-		.slider("value", behavior.active.main.color.b)
-		.on("slide", function(event, ui) {
-			behavior.active.main.color.b = ui.value;
-			sendUpdate('behavior.active.main.color.b',
-						".active .color-slider.blue",
-						ui.value,
-						true);
-		});
+		// set values based on behavior and register on slide events
+		$(".dormant .color-slider.red")
+			.slider("value", behavior.dormant.main.color.r)
+			.on("slide", function(event, ui) {
+				behavior.dormant.main.color.r = ui.value;
+				sendUpdate('behavior.dormant.main.color.r',
+							".dormant .color-slider.red",
+							ui.value,
+							true);
+			});
+		$(".dormant .color-slider.green")
+			.slider("value", behavior.dormant.main.color.g)
+			.on("slide", function(event, ui) {
+				behavior.dormant.main.color.g = ui.value;
+				sendUpdate('behavior.dormant.main.color.g',
+							".dormant .color-slider.green",
+							ui.value,
+							true);
+			});
+		$(".dormant .color-slider.blue")
+			.slider("value", behavior.dormant.main.color.b)
+			.on("slide", function(event, ui) {
+				behavior.dormant.main.color.b = ui.value;
+				sendUpdate('behavior.dormant.main.color.b',
+							".dormant .color-slider.blue",
+							ui.value,
+							true);
+			});
 
-	$("#twitter-tracking").attr("value", behavior.tracking);
+		// same for active
+		$(".active .color-slider.red")
+			.slider("value", behavior.active.main.color.r)
+			.on("slide", function(event, ui) {
+				behavior.active.main.color.r = ui.value;
+				sendUpdate('behavior.active.main.color.r',
+							".active .color-slider.red",
+							ui.value,
+							true);
+			});
+		$(".active .color-slider.green")
+			.slider("value", behavior.active.main.color.g)
+			.on("slide", function(event, ui) {
+				behavior.active.main.color.g = ui.value;
+				sendUpdate('behavior.active.main.color.g',
+							".active .color-slider.green",
+							ui.value,
+							true);
+			});
+		$(".active .color-slider.blue")
+			.slider("value", behavior.active.main.color.b)
+			.on("slide", function(event, ui) {
+				behavior.active.main.color.b = ui.value;
+				sendUpdate('behavior.active.main.color.b',
+							".active .color-slider.blue",
+							ui.value,
+							true);
+			});
+
+		$("#twitter-tracking").attr("value", behavior.tracking);
+
+	});
 }
 
 function sendUpdate(javascript, css, value, isSlider) {

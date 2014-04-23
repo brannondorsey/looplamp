@@ -4,8 +4,8 @@
 function Throb(animationObject){
 
 	this.time = animationObject.time;
-	this.beginColor = this._parseColorFromJSON(animationObject.begin.color);
-	this.endColor = this._parseColorFromJSON(animationObject.end.color);
+	this.beginColor = this._parseColorFromJSON(animationObject.main.color);
+	this.endColor = this._parseColorFromJSON(animationObject.secondary.color);
 	this.fluid = Boolean(animationObject.fluid);
 	this.shouldRepeat = (this.fluid) ? true : false;
 
