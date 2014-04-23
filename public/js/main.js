@@ -42,6 +42,9 @@ var behavior = {
     }
 }
 
+var port = 3333;
+var socket;
+
 // var test = {foo:{bar: 1}};
 // test.foo.bar = 5;
 // console.log(test.foo.bar);
@@ -67,12 +70,20 @@ $(document).ready(function(){
 
 	$("#twitter-tracking").on('blur', function(evt){
 		behavior.tracking = $("#twitter-tracking").attr("value");
-		sendBehavior();
+		sendUpdate('behavior.tracking', 
+				   '#twitter-tracking', 
+				   behavior.tracking,
+				   false);
 	});
 
 	// onUpdateRecieved('behavior.dormant.main.color.r',
 	// 				 '.dormant .color-slider.red',
 	// 				 200);
+	socket = io.connect('http://localhost:' + port);
+	
+	socket.on('updated', function (update) {
+	   onUpdateRecieved(update);
+	});
 });
 
 // code to load the current behavior
@@ -85,7 +96,8 @@ function loadBehavior() {
 			behavior.dormant.main.color.r = ui.value;
 			sendUpdate('behavior.dormant.main.color.r',
 						".dormant .color-slider.red",
-						ui.value);
+						ui.value,
+						true);
 		});
 	$(".dormant .color-slider.green")
 		.slider("value", behavior.dormant.main.color.g)
@@ -93,7 +105,8 @@ function loadBehavior() {
 			behavior.dormant.main.color.g = ui.value;
 			sendUpdate('behavior.dormant.main.color.g',
 						".dormant .color-slider.green",
-						ui.value);
+						ui.value,
+						true);
 		});
 	$(".dormant .color-slider.blue")
 		.slider("value", behavior.dormant.main.color.b)
@@ -101,7 +114,8 @@ function loadBehavior() {
 			behavior.dormant.main.color.b = ui.value;
 			sendUpdate('behavior.dormant.main.color.b',
 						".dormant .color-slider.blue",
-						ui.value);
+						ui.value,
+						true);
 		});
 
 	// same for active
@@ -111,7 +125,8 @@ function loadBehavior() {
 			behavior.active.main.color.r = ui.value;
 			sendUpdate('behavior.active.main.color.r',
 						".active .color-slider.red",
-						ui.value);
+						ui.value,
+						true);
 		});
 	$(".active .color-slider.green")
 		.slider("value", behavior.active.main.color.g)
@@ -119,7 +134,8 @@ function loadBehavior() {
 			behavior.active.main.color.g = ui.value;
 			sendUpdate('behavior.active.main.color.g',
 						".active .color-slider.green",
-						ui.value);
+						ui.value,
+						true);
 		});
 	$(".active .color-slider.blue")
 		.slider("value", behavior.active.main.color.b)
@@ -127,37 +143,36 @@ function loadBehavior() {
 			behavior.active.main.color.b = ui.value;
 			sendUpdate('behavior.active.main.color.b',
 						".active .color-slider.blue",
-						ui.value);
+						ui.value,
+						true);
 		});
 
 	$("#twitter-tracking").attr("value", behavior.tracking);
 }
 
-// sends new behavior data to the server
-function sendBehavior(update) {
+function sendUpdate(javascript, css, value, isSlider) {
+	socket.emit("update", {
+		javascript: javascript,
+		css: css,
+		value: value,
+		isSlider, isSlider
+	});
+}
 
-	// if behavior needs a global update
-	if (update) {
-
+/*
+	{
+		javascript: "",
+		css: "",
+		value: 1,
+		isSlider: true
 	}
-
-	// code to send behavior to server
-	
+ */
+function onUpdateRecieved(update) {
+	eval(update.javascript + " = " + update.value);
+	if (update.isSlider) $(css).slider("value", value);
+	else $(css).attr("value", value);
 }
 
-function sendUpdate(javascript, css, value) {
-
-}
-
-function onUpdateRecieved(javascript, css, value) {
-	eval(javascript + " = " + value);
-	$(css).slider("value", value);
-}
-
-// called when new behavior data is received from the server
-function updateBehavior(behavior) {
-
-}
 
 function hexFromRGB(r, g, b) {
 
