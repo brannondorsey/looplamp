@@ -130,7 +130,10 @@ function sendUpdate(javascript, css, value, isSlider) {
 function onUpdateRecieved(update) {
 	eval(update.javascript + " = '" + update.value + "'");
 	if (update.isSlider) $(update.css).slider("value", update.value);
-	else $(css).attr("value", update.value);
+	else {
+		$(update.css).attr("value", update.value);
+		
+	}
 }
 
 

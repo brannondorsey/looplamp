@@ -34,7 +34,7 @@ fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, 
 			
 			// lamp.updateBehavior(behavior);
 			eval(update.javascript + " = '" + update.value + "'");
-			if (update.isSlider) {
+			if (update.isSlider) { // if update is color slider
 				var color = update.javascript.substring(0, update.javascript.lastIndexOf('.'));
 				lamp.preview(eval(color));
 				clearTimeout(updateTimeout);
@@ -42,6 +42,12 @@ fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, 
 					lamp.setPreviewing(false);
 					lamp.updateBehavior(behavior);
 				}, updateDelay);
+			} else { // if update is tracking
+				if (update.css == "#twitter-tracking") {
+					twitterHand.updateStream('filter', behavior.tracking, function(tweetData){
+						respondToTweet(tweetData);
+					});
+				}
 			}
 			
 			socket.broadcast.emit("updated", update);
