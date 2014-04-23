@@ -3,12 +3,15 @@ var fs = require("fs"),
 	app = express(),
 	server = require("http").createServer(app),
 	io = require("socket.io").listen(server),
-	Lamp = require(__dirname + "/classes/Lamp");
+	Lamp = require(__dirname + "/classes/Lamp"),
 	TwitterHandler = require(__dirname + "/classes/TwitterHandler");
 
 var port = 3333;
 var twitterHand = new TwitterHandler();
 var lamp = new Lamp(51);
+
+var updateDelay = 2000; // millis
+var updateTimeout;
 
 fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, data){
 	
@@ -22,13 +25,25 @@ fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, 
 
 	io.set("log level", 1);
 	server.listen(port);
+	lamp.start(behavior);
 	console.log("The server was started on port " + port);
 
 	io.sockets.on("connection", function(socket){
 
 		socket.on("update", function(update){
-			lamp.updateBehavior(behavior);
+			
+			// lamp.updateBehavior(behavior);
 			eval(update.javascript + " = '" + update.value + "'");
+			if (update.isSlider) {
+				var color = update.javascript.substring(0, update.javascript.lastIndexOf('.'));
+				lamp.preview(eval(color));
+				clearTimeout(updateTimeout);
+				updateTimeout = setTimeout(function(){
+					lamp.setPreviewing(false);
+					lamp.updateBehavior(behavior);
+				}, updateDelay);
+			}
+			
 			socket.broadcast.emit("updated", update);
 		});
 	});
@@ -36,8 +51,6 @@ fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, 
 	twitterHand.onTweetReceived('filter', behavior.tracking, function(tweetData){
 		respondToTweet(tweetData);
 	});
-
-	lamp.start(behavior);
 });
 
 //not inline because it may be used more than once if the stream is restarted
@@ -52,4 +65,8 @@ function respondToTweet(tweetData){
 			lamp.setActive();
 		}
 	}
+}
+
+function updateBehavior() {
+
 }
