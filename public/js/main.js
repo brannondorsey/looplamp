@@ -25,8 +25,7 @@ $(document).ready(function(){
 		});
 
 		$("#twitter-tracking").on('blur', function(evt){
-			behavior.tracking = $("#twitter-tracking").attr("value");
-			console.log("#twitter-tracking value: " + $("#twitter-tracking").attr("value"));
+			behavior.tracking = $("#twitter-tracking").val();
 			sendUpdate('behavior.tracking', 
 					   '#twitter-tracking', 
 					   behavior.tracking,
@@ -34,7 +33,6 @@ $(document).ready(function(){
 		});			 
 		
 		socket = io.connect(url);
-		console.log('socket loaded!');
 		socket.on('updated', function (update) {
 		   onUpdateRecieved(update);
 		});
@@ -106,7 +104,7 @@ function loadBehavior(callback) {
 							true);
 			});
 
-		$("#twitter-tracking").attr("value", behavior.tracking);
+		$("#twitter-tracking").val(behavior.tracking);
 		callback();
 	});
 }
@@ -131,7 +129,7 @@ function sendUpdate(javascript, css, value, isSlider) {
 function onUpdateRecieved(update) {
 	eval(update.javascript + " = '" + update.value + "'");
 	if (update.isSlider) $(update.css).slider("value", update.value);
-	else $(update.css).attr("value", update.value);
+	else $(update.css).val(update.value);
 }
 
 
