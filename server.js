@@ -1,11 +1,12 @@
 var fs = require("fs"),
-	app = require("express")(),
+	express = require("express"),
+	app = express(),
 	server = require("http").createServer(app),
 	io = require("socket.io").listen(server);
 
 var port = 3333;
 
-fs.readFile( __dirname + "behavior_data/behavior.json", "utf-8", function(err, data){
+fs.readFile( __dirname + "/behavior_data/behavior.json", "utf-8", function(err, data){
 	
 	if (err) throw err;
 	
@@ -22,6 +23,7 @@ fs.readFile( __dirname + "behavior_data/behavior.json", "utf-8", function(err, d
 	io.sockets.on("connection", function(socket){
 
 		socket.on("update", function(update){
+			console.log(update);
 			eval(update.javascript + " = " + update.value);
 			socket.broadcast.emit("updated", update);
 		});

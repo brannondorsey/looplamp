@@ -155,7 +155,7 @@ function sendUpdate(javascript, css, value, isSlider) {
 		javascript: javascript,
 		css: css,
 		value: value,
-		isSlider, isSlider
+		isSlider: isSlider
 	});
 }
 
