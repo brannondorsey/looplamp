@@ -83,8 +83,8 @@ $(document).ready(function(){
 	// 				 '.dormant .color-slider.red',
 	// 				 200);
 	// 				 
-	console.log("Thing: " + location.protocol + "//" + location.host + port);
-	socket = io.connect(location.protocol + "//" + location.host + port);
+	console.log("Thing: " + location.protocol + "//" + location.host);
+	socket = io.connect(location.protocol + "//" + location.host);
 	
 	socket.on('updated', function (update) {
 	   onUpdateRecieved(update);
@@ -174,7 +174,7 @@ function sendUpdate(javascript, css, value, isSlider) {
  */
 function onUpdateRecieved(update) {
 	eval(update.javascript + " = " + update.value);
-	if (update.isSlider) $(css).slider("value", value);
+	if (update.isSlider) $(update.css).slider("value", value);
 	else $(css).attr("value", value);
 }
 
