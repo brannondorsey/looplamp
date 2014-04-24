@@ -1,6 +1,6 @@
 // serve this from localhost:port/behavior
 
-var port = 3333;
+var settings;
 var socket;
 var url = location.protocol + "//" + location.host;
 
@@ -16,25 +16,29 @@ $(document).ready(function(){
 	// make all sliders touch draggable
 	$('.slider').draggable();
 
-	loadBehavior(function(){
+	$.getJSON(url + "/data/settings", function(data){
 
-		$("#twitter-tracking").on('keypress', function(evt){
-		if (evt.keyCode == 13) {
-			$(this).blur();
-		}
-		});
+		settings = data;
+		loadBehavior(function(){
 
-		$("#twitter-tracking").on('blur', function(evt){
-			behavior.tracking = $("#twitter-tracking").val();
-			sendUpdate('behavior.tracking', 
-					   '#twitter-tracking', 
-					   behavior.tracking,
-					   false);
-		});			 
-		
-		socket = io.connect(url);
-		socket.on('updated', function (update) {
-		   onUpdateRecieved(update);
+			$("#twitter-tracking").on('keypress', function(evt){
+			if (evt.keyCode == 13) {
+				$(this).blur();
+			}
+			});
+
+			$("#twitter-tracking").on('blur', function(evt){
+				behavior.tracking = $("#twitter-tracking").val();
+				sendUpdate('behavior.tracking', 
+						   '#twitter-tracking', 
+						   behavior.tracking,
+						   false);
+			});			 
+			
+			socket = io.connect(url);
+			socket.on('updated', function (update) {
+			   onUpdateRecieved(update);
+			});
 		});
 	});
 });
@@ -42,7 +46,7 @@ $(document).ready(function(){
 // code to load the current behavior
 function loadBehavior(callback) {
 	
-	$.getJSON(url + "/behavior", function(data){
+	$.getJSON(url + "/data/behavior", function(data){
 		
 		behavior = data;
 
@@ -104,7 +108,7 @@ function loadBehavior(callback) {
 							true);
 			});
 
-		$("#twitter-tracking").val(behavior.tracking);
+		$("#twitter-tracking").attr("value", behavior.tracking);
 		callback();
 	});
 }
@@ -129,7 +133,7 @@ function sendUpdate(javascript, css, value, isSlider) {
 function onUpdateRecieved(update) {
 	eval(update.javascript + " = '" + update.value + "'");
 	if (update.isSlider) $(update.css).slider("value", update.value);
-	else $(update.css).val(update.value);
+	else $(update.css).attr("value", update.value);
 }
 
 

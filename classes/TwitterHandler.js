@@ -1,9 +1,7 @@
 var util = require('util'), twitter = require('twitter');
 
-function TwitterHandler(){
-	if(twitterCredentials = this._loadTwitterCredentials()){
-		this.twitter = new twitter(twitterCredentials);
-	}else console.log("Failed to load twitter credentials");
+function TwitterHandler(twitterCredentials){
+	this.twitter = new twitter(twitterCredentials);
 }
 
 TwitterHandler.prototype.onTweetReceived = function(streamMode, tracking, onStream){
@@ -44,14 +42,6 @@ TwitterHandler.prototype.needsNewStream = function(data){
 
 //--------------------------------------------------------------
 //PROTECTED
-
-TwitterHandler.prototype._loadTwitterCredentials = function(){
-	var fs = require("fs");
-	if(file = fs.readFileSync("twitter_credentials.json")){
-		//validate here...
-		return JSON.parse(file);
-	}else return false;
-}
 
 TwitterHandler.prototype._validTweet = function(tweetData){
 	return (typeof tweetData !== 'undefined' &&

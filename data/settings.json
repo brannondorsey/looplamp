@@ -1,0 +1,10 @@
+{
+	"port": 3333,
+	"numberOfLights": 51,
+	"twitter": {
+		"consumer_key": "TroyIuC1l3i3laNlwl5mg",
+	    "consumer_secret": "qYRSTEHzHhTsL0CBcMnXxjqeY5UQ6U4C0kNvmPSG4K4",
+	    "access_token_key": "1230084602-UtUB4QdlhNkv1aLqrjS3eYoZ96APon5IhjOqBFt",
+	    "access_token_secret": "wscl1nV8gFO4kMhtJy7DjhQKkpJHB1fW5Jzb4RXZq8"
+	}
+}
