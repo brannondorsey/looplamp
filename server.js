@@ -11,6 +11,7 @@ var lamp;
 
 var settings;
 var behavior;
+var writingBehavior = false;
 var updateDelay = 2000; // millis
 var updateTimeout;
 
@@ -49,6 +50,14 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 					lamp.preview(eval(color));
 					clearTimeout(updateTimeout);
 					updateTimeout = setTimeout(function(){
+						if (!writingBehavior) {
+							writingBehavior = true;
+							fs.writeFile(__dirname + "/data/behavior.json", JSON.stringify(behavior), function(err){
+								if (err) throw err;
+								console.log("Behavior saved!");
+								writingBehavior = false;
+							});
+						}
 						lamp.setPreviewing(false);
 						lamp.updateBehavior(behavior);
 					}, updateDelay);
