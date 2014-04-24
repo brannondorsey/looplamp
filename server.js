@@ -43,9 +43,8 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 
 			socket.on("update", function(update){
 				
-				// lamp.updateBehavior(behavior);
-				eval(update.javascript + " = '" + update.value + "'");
 				if (update.isSlider) { // if update is color slider
+					eval(update.javascript + " = " + update.value + "");
 					var color = update.javascript.substring(0, update.javascript.lastIndexOf('.'));
 					lamp.preview(eval(color));
 					clearTimeout(updateTimeout);
@@ -62,6 +61,7 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 						lamp.updateBehavior(behavior);
 					}, updateDelay);
 				} else { // if update is tracking
+					eval(update.javascript + " = '" + update.value + "'");
 					if (update.css == "#twitter-tracking") {
 						if(twitterHand.needsNewStream(behavior)){
 							twitterHand.updateStream(behavior.streamMode, behavior.tracking, function(tweetData){

@@ -14,24 +14,26 @@ var behavior =
 { 	
 	"dormant": {
 		"animation": false,
-		"color":{
-			"r": 0,
-			"g": 0,
-			"b": 0
+		"main": {
+			"color":{
+				"r": 0,
+				"g": 0,
+				"b": 0
+			}
 		}
 	},
 	"active": {
 		"animation": true,
 		"time": 1000,
 		"fluid": true,
-		"begin":{
+		"main":{
 			"color":{
 				"r": 0,
 				"g": 0,
 				"b": 0
 			}
 		},
-		"end": {
+		"secondary": {
 			"color":{
 				"r": 255,
 				"g": 255,
