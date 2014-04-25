@@ -13,6 +13,10 @@ $(document).ready(function(){
 		min: 0
 	});
 
+	$("input[type='checkbox'].switch").switchButton({
+		labels_placement: "right"
+	});
+
 	// make all sliders touch draggable
 	$('.slider').draggable();
 

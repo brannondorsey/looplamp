@@ -12,6 +12,7 @@
 
         <link rel="stylesheet" href="css/normalize.min.css">
         <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.4.css">
+        <link rel="stylesheet" href="css/jquery.switchButton.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -38,8 +39,8 @@
             <div class="main wrapper clearfix">                
                 <section>
                     <!-- <h2 style="text-align:center">Lamp</h2> -->
+                    <h3>Dormant</h3>
                     <div class="control">
-                        <h3>Dormant</h3>
                         The normal color of the lamp.
                         <div class="slider-box dormant">
                             <div class="slider color-slider red"></div>
@@ -48,8 +49,11 @@
                         </div>
                     </div>
 
-                    <div class="control">
-                        <h3>Active</h3>
+                    <h3>Active</h3>
+                    <div class="switch-wrapper">
+                        <input type="checkbox" class="switch" value="1" checked>
+                    </div>
+                    <div class="control">   
                         The color of the lamp when someone tweets:
                         <input id="twitter-tracking" type="text" placeholder="#lightupchicago" onkeypress="this.style.width = ((this.value.length + 1) * 9) + 'px';">
                         <div class="slider-box active">
@@ -57,6 +61,7 @@
                                 <div class="slider color-slider green"></div>
                                 <div class="slider color-slider blue"></div>    
                         </div>
+                        <div id="active-block" class="disabled" ></div>
                     </div>
                 </section>
 
@@ -87,6 +92,7 @@
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
         <script src="js/jquery/jquery-ui-1.10.4.min.js"></script>
         <script src="js/jquery/jquery.ui.touch-punch.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.switchButton.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="js/main.js"></script>
 
