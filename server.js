@@ -46,6 +46,7 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 				if (update.isSlider) { // if update is color slider
 					eval(update.javascript + " = " + update.value);
 					var color = update.javascript.substring(0, update.javascript.lastIndexOf('.'));
+					lamp.setPreviewing(true);
 					lamp.preview(eval(color));
 					clearTimeout(updateTimeout);
 					updateTimeout = setTimeout(function(){
@@ -102,7 +103,7 @@ function saveBehavior(){
 		writingBehavior = true;
 		fs.writeFile(__dirname + "/data/behavior.json", JSON.stringify(behavior), function(err){
 			if (err) throw err;
-			console.log("Behavior saved!");
+			// console.log("Behavior saved!");
 			writingBehavior = false;
 		});
 	}

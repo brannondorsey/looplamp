@@ -1,57 +1,70 @@
 //---------------------------------------------------------
 //Classes
 
-function Throb(animationObject){
-
-	this.time = animationObject.time;
-	this.beginColor = this._parseColorFromJSON(animationObject.main.color);
-	this.endColor = this._parseColorFromJSON(animationObject.secondary.color);
-	this.fluid = Boolean(animationObject.fluid);
-	this.shouldRepeat = (this.fluid) ? true : false;
+function Throb(){
 
 	this.frameRate = 10;
 	this.threshold = 1;
-	this.numbFrames = parseInt(this.time)/this.frameRate;
-	this.isFinished = false;
+	this.setEnabled(true);
 }
 
-Throb.prototype.animate = function(pixelBuffer, onFinished){
+Throb.prototype.animate = function(beginColor,
+								   endColor,
+								   millis,
+								   shouldRepeat,
+								   pixelBuffer, 
+								   callback){
 	
-	this.currentFrame = 0;
-	this.currentColor = this.beginColor;
-
+	
+	var currentFrame = 0;
+	var numbFrames = millis/this.frameRate;
+	this.currentColor = beginColor;
+	this.isFinished = false;
+	this.endColor = endColor;
+	
 	//the values each color should increment by so that they each arrive
 	//at the target color at the same time
-	this.rIncrementVal = Math.abs(Math.abs(this.beginColor.r - this.endColor.r) / this.numbFrames);
-	this.gIncrementVal = Math.abs(Math.abs(this.beginColor.g - this.endColor.g) / this.numbFrames);
-	this.bIncrementVal = Math.abs(Math.abs(this.beginColor.b - this.endColor.b) / this.numbFrames);
+	this.rIncrementVal = Math.abs(Math.abs(beginColor.r - this.endColor.r) / numbFrames);
+	this.gIncrementVal = Math.abs(Math.abs(beginColor.g - this.endColor.g) / numbFrames);
+	this.bIncrementVal = Math.abs(Math.abs(beginColor.b - this.endColor.b) / numbFrames);
 
-	var that = this;
-	this.intervalID = setInterval(function(){
-		if(that.currentFrame < that.numbFrames){
-			that._tick(pixelBuffer);
-			that.currentFrame++;
-		}
-		else{
+	var self = this;
+	var intervalID = setInterval(function(){
+
+		if (!self.enabled) {
+			clearInterval(intervalID);
+			return;
+		} else if(currentFrame < numbFrames){
+			self._tick(pixelBuffer);
+			currentFrame++;
+		}else{
+			
 			//stop the interval
-			clearInterval(that.intervalID);
-			if(that.fluid &&
-			   that.shouldRepeat){
+			clearInterval(intervalID);
+			if(shouldRepeat){
 				
 				//swap the begin and end colors
-				var temp = that.beginColor;
-				that.beginColor = that.endColor;
-				that.endColor = temp;
+				var temp = beginColor;
+				beginColor = endColor;
+				endColor = temp;
 
-				that.animate(pixelBuffer, onFinished);
-				that.shouldRepeat = false;
+				self.animate(beginColor,
+						     endColor,
+							 millis,
+							 false, // shouldRepeat
+							 pixelBuffer, 
+							 callback);
 				
 			}else{
-				that.isFinished = true;
-				onFinished();
+				self.isFinished = true;
+				callback();
 			}
 		}	
 	}, this.frameRate);
+}
+
+Throb.prototype.setEnabled = function(bool) {
+	this.enabled = bool;
 }
 
 Throb.prototype.isFinished = function(){
@@ -85,16 +98,13 @@ Throb.prototype._getIncrementedColor = function(incrementVal, colorVal, targetCo
 	if(colorVal < targetColorVal &&
 	   !this._targetReached(this.threshold, colorVal, targetColorVal)){
 		 colorVal += incrementVal; 
-		// console.log("the color value of b is less than the targetColorVal");
 		 
 	} 
 	//color value is greater than target color value
 	else if(colorVal > targetColorVal &&
 			!this._targetReached(this.threshold, colorVal, targetColorVal)){
-		 // console.log("the color value of b is less than the targetColorVal");
 	   	 colorVal -= incrementVal;
 	}
-	// console.log("It was neither");
 	return colorVal;
 }
 
@@ -102,14 +112,4 @@ Throb.prototype._targetReached = function(threshold, currentColor, targetColor){
 	return (Math.abs(currentColor - targetColor) < threshold) ? true : false;
 }
 
-Throb.prototype._parseColorFromJSON = function(colorJSON){
-	var colorToReturn = {};
-	colorToReturn.r = parseInt(colorJSON.r);
-	colorToReturn.g = parseInt(colorJSON.g);
-	colorToReturn.b = parseInt(colorJSON.b);
-	return colorToReturn;
-}
-
 module.exports = Throb;
-
-//do the active animation and then go to dormant

@@ -7,6 +7,7 @@ function Lamp(numPixels){
 	this.device	= new spi.Spi('/dev/spidev0.0', function(){});
 	this.pixels = new RPixel.PixelBuffer(this.device, numPixels);
 	this.previewing = false;
+	this.throb = new Throb();
 	//this.isActive = true; //hypothetically this should block any active 
 	//states from happening until this.start
 }
@@ -15,10 +16,11 @@ function Lamp(numPixels){
 Lamp.prototype.preview = function(color){
 	this.pixels.fillRGB(color.r, color.g, color.b);
 	this.pixels.update();
-	this.setPreviewing(true);
 }
 
 Lamp.prototype.setPreviewing = function(bool){
+	this.isActive = false;
+	this.throb.setEnabled(!bool);
 	this.previewing = Boolean(bool);
 }
 
@@ -62,19 +64,23 @@ Lamp.prototype._activeComplete = function(){
 //writes the behavior to the pi's lights. 
 Lamp.prototype._writeBehavior = function(state, isActive){
 
-	if(state.animation === true||
+	if(state.animation === true ||
 	   state.animation === 'true'){ //animation
-		this.throb = new Throb(state);
-
+		
+		var self = this;
 		//animate. Anonomous function called when animation is complete
-		var that = this;
-		this.throb.animate(this.pixels, function(){
-			if(isActive) that.isActive = false;
+		
+		this.throb.animate(self.behavior.dormant.main.color, 
+						   self.behavior.active.main.color,
+						   this.behavior.active.time, 
+						   true,
+						   this.pixels, function(){
+			if(isActive) self.isActive = false;
 			//run the dormant state when any animation is over.
 			//If this is the active state, it should now be the dormant one.
 			//If this is the dormant state, it should recur itself because
 			//the lamp is always dormant unless active
-			that._dormantState();
+			self._dormantState();
 		});
 	}else{ //static
 		//note: the color object's properties being stored in r, g, b are
@@ -84,10 +90,10 @@ Lamp.prototype._writeBehavior = function(state, isActive){
 		this.pixels.update();
 		//if this is active then run the dormant state once the active time is up
 		if(isActive){
-			var that = this;
+			var self = this;
 			setTimeout(function(){
-				that.isActive = false;
-				that._dormantState();
+				self.isActive = false;
+				self._dormantState();
 			}, state.time);
 		}
 	}
