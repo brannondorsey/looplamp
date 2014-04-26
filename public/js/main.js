@@ -2,6 +2,8 @@
 
 var settings;
 var socket;
+var behavior;
+var activeSwitch;
 var url = location.protocol + "//" + location.host;
 
 $(document).ready(function(){
@@ -13,10 +15,6 @@ $(document).ready(function(){
 		min: 0
 	});
 
-	$("input[type='checkbox'].switch").switchButton({
-		labels_placement: "right"
-	});
-
 	// make all sliders touch draggable
 	$('.slider').draggable();
 
@@ -25,10 +23,15 @@ $(document).ready(function(){
 		settings = data;
 		loadBehavior(function(){
 
+			socket = io.connect(url);
+			socket.on('updated', function (update) {
+			   onUpdateRecieved(update);
+			});
+
 			$("#twitter-tracking").on('keypress', function(evt){
-			if (evt.keyCode == 13) {
-				$(this).blur();
-			}
+				if (evt.keyCode == 13) {
+					$(this).blur();
+				}
 			});
 
 			$("#twitter-tracking").on('blur', function(evt){
@@ -38,10 +41,14 @@ $(document).ready(function(){
 						   behavior.tracking,
 						   false);
 			});			 
-			
-			socket = io.connect(url);
-			socket.on('updated', function (update) {
-			   onUpdateRecieved(update);
+
+			$("#active-switch").change(function(){
+				behavior.active.enabled = !behavior.active.enabled;
+				$("#active-block").toggleClass("disabled", !behavior.active.enabled);
+				sendUpdate('behavior.active.enabled',
+					       '#active-switch',
+			               behavior.active.enabled,
+			               false);
 			});
 		});
 	});
@@ -113,6 +120,15 @@ function loadBehavior(callback) {
 			});
 
 		$("#twitter-tracking").attr("value", behavior.tracking);
+
+		// checkbox
+		$("#active-switch").prop('checked', behavior.active.enabled);
+		activeSwitch = $("input[type='checkbox'].switch").switchButton({
+			checked: behavior.active.enabled,
+			labels_placement: "right"
+		});
+
+		if (!behavior.active.enabled) $("#active-block").toggleClass("disabled", true);
 		callback();
 	});
 }
@@ -137,7 +153,16 @@ function sendUpdate(javascript, css, value, isSlider) {
 function onUpdateRecieved(update) {
 	eval(update.javascript + " = '" + update.value + "'");
 	if (update.isSlider) $(update.css).slider("value", update.value);
-	else $(update.css).attr("value", update.value);
+	else if (update.css == "#twitter-tracking") $(update.css).attr("value", update.value);
+	else if (update.css == "#active-switch") {
+		$(update.css).prop('checked', update.value);
+		activeSwitch.switchButton("redraw");
+		$("#active-block").toggleClass("disabled", !update.value);
+	}
+}
+
+function setActiveEnabled(bool) {
+
 }
 
 

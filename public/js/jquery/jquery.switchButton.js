@@ -42,21 +42,21 @@
     $.widget("sylightsUI.switchButton", {
 
         options: {
-            checked: undefined,			// State of the switch
+            checked: undefined,         // State of the switch
 
-            show_labels: true,			// Should we show the on and off labels?
-            labels_placement: "both", 	// Position of the labels: "both", "left" or "right"
-            on_label: "ON",				// Text to be displayed when checked
-            off_label: "OFF",			// Text to be displayed when unchecked
+            show_labels: true,          // Should we show the on and off labels?
+            labels_placement: "both",   // Position of the labels: "both", "left" or "right"
+            on_label: "ON",             // Text to be displayed when checked
+            off_label: "OFF",           // Text to be displayed when unchecked
 
-            width: 25,					// Width of the button in pixels
-            height: 11,					// Height of the button in pixels
-            button_width: 12,			// Width of the sliding part in pixels
+            width: 25,                  // Width of the button in pixels
+            height: 11,                 // Height of the button in pixels
+            button_width: 12,           // Width of the sliding part in pixels
 
-            clear: true,				// Should we insert a div with style="clear: both;" after the switch button?
-            clear_after: null,		    // Override the element after which the clearing div should be inserted (null > right after the button)
-            on_callback: undefined,		//callback function that will be executed after going to on state
-            off_callback: undefined		//callback function that will be executed after going to off state
+            clear: true,                // Should we insert a div with style="clear: both;" after the switch button?
+            clear_after: null,          // Override the element after which the clearing div should be inserted (null > right after the button)
+            on_callback: undefined,     //callback function that will be executed after going to on state
+            off_callback: undefined     //callback function that will be executed after going to off state
         },
 
         _create: function() {
@@ -246,13 +246,17 @@
             this._toggleSwitch();
         },
 
-        _toggleSwitch: function() {
+        _toggleSwitch: function(skipChangeEvent) {
             this.options.checked = !this.options.checked;
             var newLeft = "";
             if (this.options.checked) {
                 // Update the underlying checkbox state
                 this.element.prop("checked", true);
-                this.element.change();
+
+                // Trigger change event unless toggle is silent
+                if (!skipChangeEvent == true) {
+                  this.element.change();
+                }
 
                 var dLeft = this.options.width - this.options.button_width;
                 newLeft = "+=" + dLeft;
@@ -275,7 +279,11 @@
             else {
                 // Update the underlying checkbox state
                 this.element.prop("checked", false);
-                this.element.change();
+
+                // Trigger change event unless toggle is silent
+                if (!skipChangeEvent == true) {
+                  this.element.change();
+                }
                 newLeft = "-1px";
 
                 // Update labels states
@@ -295,8 +303,18 @@
             }
             // Animate the switch
             this.button.animate({ left: newLeft }, 250, "easeInOutCubic");
+        },
+        silentToggle: function() {
+          this._toggleSwitch(true);
+        },
+        toggle: function() {
+          this._toggleSwitch(false);
+        },
+        redraw: function() {
+          if (!this.element.prop("checked") == this.button_bg.hasClass("checked")) {
+            this._toggleSwitch(true);
+          }
         }
-
     });
 
 })(jQuery);
