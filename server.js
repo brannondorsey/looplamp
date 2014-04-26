@@ -58,12 +58,7 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 					if (update.css == "#twitter-tracking") {
 						eval(update.javascript + " = '" + update.value + "'");
 						if(twitterHand.needsNewStream(behavior)){
-							twitterHand.updateStream(behavior.streamMode, behavior.tracking, function(tweetData){
-								respondToTweet(tweetData);
-								//dont even think about putting anything else in here...
-								//it will cause the most unnoticable bug that will ruin your life
-								//because this registers a new event that overrides onTweetRecieved
-							});
+							twitterHand.updateStream(behavior.streamMode, behavior.tracking, respondToTweet);
 						}
 					} else if (update.css == "#active-switch") {
 						eval(update.javascript + " = " + update.value);
@@ -77,9 +72,7 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 			});
 		});
 
-		twitterHand.onTweetReceived('filter', behavior.tracking, function(tweetData){
-			respondToTweet(tweetData);
-		});
+		twitterHand.onTweetReceived('filter', behavior.tracking, respondToTweet);
 	});
 });
 

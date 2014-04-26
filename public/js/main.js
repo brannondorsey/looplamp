@@ -134,12 +134,14 @@ function loadBehavior(callback) {
 }
 
 function sendUpdate(javascript, css, value, isSlider) {
-	socket.emit("update", {
+	var update = {
 		javascript: javascript,
 		css: css,
 		value: value,
 		isSlider: isSlider
-	});
+	}
+	socket.emit("update", update);
+	console.log(update);
 }
 
 /*
@@ -160,11 +162,6 @@ function onUpdateRecieved(update) {
 		$("#active-block").toggleClass("disabled", !update.value);
 	}
 }
-
-function setActiveEnabled(bool) {
-
-}
-
 
 function hexFromRGB(r, g, b) {
 
