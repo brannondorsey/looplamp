@@ -44,43 +44,35 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 			socket.on("update", function(update){
 				
 				if (update.isSlider) { // if update is color slider
-					eval(update.javascript + " = " + update.value + "");
+					eval(update.javascript + " = " + update.value);
 					var color = update.javascript.substring(0, update.javascript.lastIndexOf('.'));
+					lamp.setPreviewing(true);
 					lamp.preview(eval(color));
 					clearTimeout(updateTimeout);
 					updateTimeout = setTimeout(function(){
-						if (!writingBehavior) {
-							writingBehavior = true;
-							fs.writeFile(__dirname + "/data/behavior.json", JSON.stringify(behavior), function(err){
-								if (err) throw err;
-								console.log("Behavior saved!");
-								writingBehavior = false;
-							});
-						}
+						saveBehavior();
 						lamp.setPreviewing(false);
 						lamp.updateBehavior(behavior);
 					}, updateDelay);
 				} else { // if update is tracking
-					eval(update.javascript + " = '" + update.value + "'");
 					if (update.css == "#twitter-tracking") {
+						eval(update.javascript + " = '" + update.value + "'");
 						if(twitterHand.needsNewStream(behavior)){
-							twitterHand.updateStream(behavior.streamMode, behavior.tracking, function(tweetData){
-								respondToTweet(tweetData);
-								//dont even FUCKING think about putting anything else in here...
-								//it will cause the most unnoticable bug that will ruin your life
-								//because this registers a new event that overrides onTweetRecieved
-							});
+							twitterHand.updateStream(behavior.streamMode, behavior.tracking, respondToTweet);
 						}
+					} else if (update.css == "#active-switch") {
+						eval(update.javascript + " = " + update.value);
+						console.log(update.javascript + " = " + update.value);
 					}
+					saveBehavior();
+					lamp.updateBehavior(behavior);
 				}
 				
 				socket.broadcast.emit("updated", update);
 			});
 		});
 
-		twitterHand.onTweetReceived('filter', behavior.tracking, function(tweetData){
-			respondToTweet(tweetData);
-		});
+		twitterHand.onTweetReceived('filter', behavior.tracking, respondToTweet);
 	});
 });
 
@@ -88,12 +80,24 @@ fs.readFile( __dirname + "/data/settings.json", "utf-8", function(err, data){
 function respondToTweet(tweetData){
 	
 	//only make the lamp active if it is dormant
-	if(!lamp.isActive){
+	if(!lamp.isActive &&
+		behavior.active.enabled){
 		twitterHand.log(tweetData);
 
 		if(!lamp.previewing){
 			//logic for flashing lights goes here...
 			lamp.setActive();
 		}
+	}
+}
+
+function saveBehavior(){
+	if (!writingBehavior) {
+		writingBehavior = true;
+		fs.writeFile(__dirname + "/data/behavior.json", JSON.stringify(behavior), function(err){
+			if (err) throw err;
+			// console.log("Behavior saved!");
+			writingBehavior = false;
+		});
 	}
 }

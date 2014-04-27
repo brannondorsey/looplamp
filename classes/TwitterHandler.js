@@ -2,17 +2,23 @@ var util = require('util'), twitter = require('twitter');
 
 function TwitterHandler(twitterCredentials){
 	this.twitter = new twitter(twitterCredentials);
+	this.streamExists = false;
 }
 
 TwitterHandler.prototype.onTweetReceived = function(streamMode, tracking, onStream){
 	//starts the stream
 	this.streamMode = streamMode;
 	this.tracking = tracking;
-	var that = this;
+	var self = this;
+	console.log("tracking: " + tracking);
 	this.stream = this.twitter.stream(streamMode, { track: tracking }, function(stream) {
 		//event
 	    stream.on('data', function(tweetData) {
-	    	if(that._validTweet(tweetData)) onStream(tweetData);
+	    	if(self._validTweet(tweetData)) onStream(tweetData);
+		});
+
+		stream.on('error', function(err){
+			console.log(err);
 		});
 	});
 }

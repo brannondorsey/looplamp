@@ -1,5 +1,5 @@
 {
-	"port": 3333,
+	"port": 8080,
 	"numberOfLights": 51,
 	"twitter": {
 		"consumer_key": "TroyIuC1l3i3laNlwl5mg",
